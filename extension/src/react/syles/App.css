@@ -1,0 +1,11 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.base {
+    width: 400px;
+    height: 600px;
+    border-radius: 0px;
+}
