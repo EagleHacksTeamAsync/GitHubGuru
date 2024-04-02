@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 // Create express app
 const app = express();
 
+const admin = require("firebase-admin");
+
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
