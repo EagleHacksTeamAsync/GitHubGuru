@@ -29,7 +29,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build Extension
-      run: npm run build-extension
+      run: npm run build
       
     - name: Package Extension
       run: zip -r package.zip dist/
