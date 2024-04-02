@@ -35,13 +35,14 @@ jobs:
         DEFAULT_BRANCH: main
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Build Extension
-      run: |
-        cd extension
-        npm run build
+    - name: pack Extension
+      uses: TheDoctor0/zip-release@0.7.6
+      with: 
+        filename: ./package.zip
+        exclusions: '.git/* .vscode/* .github/* *.md'
             
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: extension-package
-        path: extension/package.zip
+        path: ./package.zip
