@@ -1,6 +1,6 @@
 [build]
   command = "echo Building Functions"
-  functions = "netlify/functions"
+  functions = "server/netlify/functions"
   publish = "server"
 [functions]
   external_node_modules = ["express"]
