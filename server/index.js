@@ -1,7 +1,7 @@
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 
 // Create express app
 const app = express();
@@ -17,15 +17,15 @@ app.use(cookieParser());
 //routes
 
 // Port server is listening on
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server started on http://localhost:${PORT}`);
 });
 
 // Error handling
 app.use((err, req, res, next) => {
-  res.status(500).send('Something broke!');
+  res.status(500).send("Something broke!");
   console.error(err.stack);
-}); 
+});
 
 export default app;
