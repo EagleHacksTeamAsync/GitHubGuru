@@ -12,14 +12,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
+    
+    # Navigate to the extension directory
+    - name: Change to Extension Directory
+      run: cd extension
+      
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '14'
         
+    # Run npm commands in the extension directory
     - name: Install Dependencies
-      run: npm install
+      run: |
+        cd extension
+        npm install
 
     - name: Super-Linter
       uses: github/super-linter@v4
@@ -27,16 +34,20 @@ jobs:
         VALIDATE_ALL_CODEBASE: false
         DEFAULT_BRANCH: main
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+    
     - name: Build Extension
-      run: npm run build
+      run: |
+        cd extension
+        npm run build-extension
       
     - name: Package Extension
-      run: zip -r package.zip dist/
-      # This step packages the contents of the dist/ directory after it has been updated by the build process.
+      run: |
+        cd extension
+        npm run package-extension
+      # Assuming your script for packaging is correct and present in the extension's package.json
       
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: extension-package
-        path: package.zip
+        path: extension/package.zip
