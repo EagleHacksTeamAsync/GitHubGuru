@@ -69,11 +69,9 @@ Workflow Steps
 
 4. Linting: Utilizes the Super-Linter action to perform a comprehensive linting of the codebase. This helps maintain code quality and consistency by catching syntax errors and stylistic issues early in the development process.
 
-5. Build Extension: Executes npm run build-extension, a custom npm script that compiles and prepares the extension's code. This typically involves transpiling, minifying, or any other build steps required to prepare the extension for deployment.
+5. Pack Extension: Instead of a direct build script, we utilize TheDoctor0/zip-release@0.7.6 action to package the extension. This action compresses the project into a package.zip, excluding unnecessary files (like .git, .vscode, .github, and markdown files), ensuring that only relevant files are included in the package.
 
-6. Package Extension: After the build completes, the output in the dist/ directory is packaged into a ZIP file named package.zip. This ZIP file contains the distributable version of the Chrome Extension, ready for deployment or distribution.
-
-7. Upload Artifact: The final step uploads package.zip as an artifact to the GitHub Actions run, making it easily accessible for further testing, manual downloads, or automated deployments in future steps or workflows.
+7. Upload Artifact: Uploads the package.zip as an artifact of the GitHub Actions run. This makes the packaged extension easily accessible for further testing, manual downloads, or future automated deployments.
 
 Highlights
 * Automated Linting: Ensures that all contributions adhere to our coding standards and guidelines.
