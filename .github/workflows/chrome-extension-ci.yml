@@ -1,0 +1,42 @@
+name: Chrome Extension CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-package:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Super-Linter
+      uses: github/super-linter@v4
+      env:
+        VALIDATE_ALL_CODEBASE: false
+        DEFAULT_BRANCH: main
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build Extension
+      run: npm run build-extension
+      
+    - name: Package Extension
+      run: zip -r package.zip dist/
+      # This step packages the contents of the dist/ directory after it has been updated by the build process.
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: extension-package
+        path: package.zip
