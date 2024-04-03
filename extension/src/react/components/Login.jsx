@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import modal from "antd/lib/modal";
+import { Modal, Button } from "antd";
 
 const CLIENT_ID = "ae74d81ecc346767a9bc";
 
 const Login = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [rerender, setRerender] = useState(false);
   const [userData, setUserData] = useState({});
 
@@ -13,10 +14,13 @@ const Login = () => {
     const codeParams = urlParams.get("code");
     console.log(codeParams);
 
-    if (codeParams && localStorage.getItem("accessToken") === null) {
+    const accessToken = localStorage.getItem("accessToken");
+    setIsModalVisible(!accessToken);
+
+    if (codeParams && !accessToken) {
       async function getAccessToken() {
         await fetch(
-          //"https://github-guru-server.netlify.app/getAccessToken?code=${codeParams}",
+          `https://github-guru-server.netlify.app/.netlify/functions/getAccessToken?code=${codeParams}`,
           {
             method: "GET",
           }
@@ -35,15 +39,12 @@ const Login = () => {
   }, [rerender]);
 
   async function getUserData() {
-    await fetch(
-      //"https://github-guru-server.netlify.app/getUserData",
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-      }
-    )
+    await fetch("https://github-guru-server.netlify.app/getUserData", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -62,14 +63,43 @@ const Login = () => {
   }
 
   return (
-    <div>
-      {localStorage.getItem("accessToken") ? (
-        <>
+    <>
+      <Modal
+        title="Login Required"
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)} // Correctly placed here for the Modal
+        footer={[
+          <Button
+            key="login"
+            type="primary"
+            onClick={loginWithGithub}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src="./images/logo-2.png"
+              alt="GitHub"
+              style={{ verticalAlign: "middle", marginRight: 12, width: 18 }}
+            />
+            Login with GitHub
+          </Button>,
+        ]}
+        width={350}
+        centered={true}
+      >
+        <p>You must log in with GitHub to use this extension.</p>
+      </Modal>
+
+      {localStorage.getItem("accessToken") && (
+        <div>
           <h1>We have the access token</h1>
           <button
             onClick={() => {
               localStorage.removeItem("accessToken");
-              setRerender(!rerender);
+              setIsModalVisible(true);
+              setUserData({});
             }}
           >
             Logout
@@ -80,14 +110,9 @@ const Login = () => {
           {Object.keys(userData).length !== 0 && (
             <h4>Hello There, {userData.login}</h4>
           )}
-        </>
-      ) : (
-        <>
-          <h1>User is not logged in</h1>
-          <button onClick={loginWithGithub}>Login with Github</button>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

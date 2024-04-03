@@ -4,10 +4,16 @@ import express, { Router } from "express";
 import serverless from "serverless-http";
 
 const api = express();
-
+const fetch = require("node-fetch");
 const router = Router();
-router.get("/hello", (req, res) => res.send("Hello World!"));
 
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+
+router.get("/hello", (req, res) => res.send("Hello World!"));
+router.get("/callback", (req, res) => {
+  res.send("You've been logged in successfully!");
+});
 api.use("/", router);
 
 //routes
@@ -22,7 +28,7 @@ app.get("/getAccessToken", async (req, res) => {
     "&code=" +
     req.query.code;
 
-  await fetch("https://github.com/login/oauth/access_token" + params, {
+  await fetch(`https://github.com/login/oauth/access_token${params}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
