@@ -4,66 +4,67 @@ import express, { Router } from "express";
 import serverless from "serverless-http";
 
 const api = express();
-const fetch = require("node-fetch");
 const router = Router();
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 router.get("/hello", (req, res) => res.send("Hello World!"));
-router.get("/callback", (req, res) => {
-  res.send("You've been logged in successfully!");
-});
-api.use("/", router);
 
-//routes
-app.get("/getAccessToken", async (req, res) => {
-  console.log(req.query.code);
+router.get("/callback", (req, res) =>
+  res.send("You've been logged in successfully!")
+);
 
-  const params =
-    "? client_id=" +
-    CLIENT_ID +
-    "&client_secret=" +
-    CLIENT_SECRET +
-    "&code=" +
-    req.query.code;
+api.use("/api", router);
 
-  await fetch(`https://github.com/login/oauth/access_token${params}`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-    },
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data);
-      res.json(data);
-    })
-    .catch((error) => {
-      res.send(error);
-    });
-});
+// //routes
+// router.get("/getAccessToken", async (req, res) => {
+//   console.log(req.query.code);
 
-app.get("/getUserData", async (req, res) => {
-  req.get("Authorization");
-  await fetch("https://api.github.com/user", {
-    method: "GET",
-    headers: {
-      Authorization: req.get("Authorization"),
-    },
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data);
-      res.json(data);
-    })
-    .catch((error) => {
-      res.send;
-    });
-});
+//   const params =
+//     "? client_id=" +
+//     CLIENT_ID +
+//     "&client_secret=" +
+//     CLIENT_SECRET +
+//     "&code=" +
+//     req.query.code;
+
+//   await fetch(`https://github.com/login/oauth/access_token${params}`, {
+//     method: "POST",
+//     headers: {
+//       Accept: "application/json",
+//     },
+//   })
+//     .then((response) => {
+//       return response.json();
+//     })
+//     .then((data) => {
+//       console.log(data);
+//       res.json(data);
+//     })
+//     .catch((error) => {
+//       res.send(error);
+//     });
+// });
+
+// router.get("/getUserData", async (req, res) => {
+//   req.get("Authorization");
+//   await fetch("https://api.github.com/user", {
+//     method: "GET",
+//     headers: {
+//       Authorization: req.get("Authorization"),
+//     },
+//   })
+//     .then((response) => {
+//       return response.json();
+//     })
+//     .then((data) => {
+//       console.log(data);
+//       res.json(data);
+//     })
+//     .catch((error) => {
+//       res.send;
+//     });
+// });
 
 export const handler = serverless(api);
