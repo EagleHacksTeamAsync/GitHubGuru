@@ -1,6 +1,9 @@
-import { ConfigProvider, theme, Card } from 'antd';
+import { ConfigProvider, theme, Card, Space } from 'antd';
 import React, { useState } from 'react';
-import '../syles/App.css';
+import '../styles/App.css';
+import SegmentedComponent  from './segmented';
+import SelectRepo from './selectRepo';
+import PrCard from './prCard';
 
 const App = () => {
     const [activeTab, setActiveTab] = useState("Notifs");
@@ -12,13 +15,13 @@ const App = () => {
         },
         {
             key: "PR",
-            tab: "PRs",
-        }
-    ] 
-    const content = {
-        "Notifs": <h1>Notifications</h1>,
-        "PR": <h1>PRs</h1>
-    }
+            tab: "Pull Requests",
+        },
+        {
+            key: "Analytics",
+            tab: "Analytics",
+        },
+    ];
 
     return (
         <ConfigProvider
@@ -29,11 +32,20 @@ const App = () => {
             <Card 
                 title="Github Guru" 
                 className='base' 
-                tabList={tabs}
-                activeTabKey={activeTab}
-                onTabChange={key => setActiveTab(key)}
             >
-                {content[activeTab]}
+                <Space direction="vertical" size="middle"> 
+                    <SegmentedComponent tabs={tabs} onChange={setActiveTab} />
+                    {activeTab === "Notifs" && (
+                        <>
+                            <SelectRepo />
+                            <PrCard />
+                            <PrCard />
+                            <PrCard />
+                            <PrCard />
+                        </>
+                    )}
+                </Space>
+
             </Card>
         </ConfigProvider>
     );
