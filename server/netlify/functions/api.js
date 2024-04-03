@@ -14,7 +14,7 @@ router.get("/hello", (req, res) => res.send("Hello World!"));
 router.get("/callback", async (req, res) => {
     const { code } = req.query;
 
-    req.post('https://github.com/login/oauth/access_token')
+    router.post('https://github.com/login/oauth/access_token')
         .send({
             client_id: CLIENT_ID,
             client_secret: CLIENT_SECRET,
