@@ -11,36 +11,60 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 router.get("/hello", (req, res) => res.send("Hello World!"));
 
-router.get("/callback", async (req, res) => {
+router.get("/callback", (req, res) => {
     const { code } = req.query;
 
-    router.post('https://github.com/login/oauth/access_token')
-        .send({
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET,
-            code: code
-        })
-        .set('Accept', 'application/json')
+    console.log(code);
+    res.send("You've been logged in successfully!");
+    res.json(code);
+});
+
+router.get("/getAccessToken", async (req, res) => {
+    console.log(req.code);
+
+    const params =
+        "? client_id=" +
+        CLIENT_ID +
+        "&client_secret=" +
+        CLIENT_SECRET +
+        "&code=" +
+        req.code;
+
+    await fetch(`https://github.com/login/oauth/access_token${params}`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+        },
+    })
         .then((response) => {
-            res.json(response.body);
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data);
+            res.json(data);
         })
         .catch((error) => {
             res.send(error);
         });
-
-    res.send("You've been logged in successfully!");
 });
 
 router.get("/getUserData", async (req, res) => {
     req.get("Authorization");
-    
-    req.get('https://api.github.com/user')
-        .set('Authorization', `token ${accessToken}`)
+    await fetch("https://api.github.com/user", {
+        method: "GET",
+        headers: {
+            Authorization: req.get("Authorization"),
+        },
+    })
         .then((response) => {
-            res.json(response.body);
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data);
+            res.json(data);
         })
         .catch((error) => {
-            res.send(error);
+            res.send;
         });
 });
 

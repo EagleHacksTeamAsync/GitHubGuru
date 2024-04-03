@@ -17,7 +17,24 @@ const Login = () => {
         setIsModalVisible(!accessToken);
 
         if (codeParams && !accessToken) {
+            async function getAccessToken() {
+                await fetch(
+                    `https://deploy-preview-22--github-guru-server.netlify.app/getAccessToken?code=${codeParams}`,
+                    {
+                        method: "GET",
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        if (data.access_token) {
+                            localStorage.setItem("accessToken", data.access_token);
+                            setRerender(!rerender);
+                        }
+                    });
+            }
 
+            getAccessToken();
         }
     }, [rerender]);
 
