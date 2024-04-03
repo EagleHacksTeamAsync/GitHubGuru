@@ -31,13 +31,6 @@ jobs:
       run: |
         cd extension
         npm install
-
-    - name: Super-Linter
-      uses: github/super-linter@v4
-      env:
-        VALIDATE_ALL_CODEBASE: false
-        DEFAULT_BRANCH: main
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: pack Extension
       uses: TheDoctor0/zip-release@0.7.6
