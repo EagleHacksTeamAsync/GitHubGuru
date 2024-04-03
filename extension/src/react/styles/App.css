@@ -10,3 +10,10 @@ body {
     border-radius: 0px;
     overflow: auto; /* Add scroll to the card if content overflows */
 }
+
+
+.notifications-button{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
