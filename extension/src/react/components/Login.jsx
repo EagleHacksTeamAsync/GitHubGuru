@@ -20,7 +20,7 @@ const Login = () => {
     if (codeParams && !accessToken) {
       async function getAccessToken() {
         await fetch(
-          `https://github-guru-server.netlify.app/.netlify/functions/getAccessToken?code=${codeParams}`,
+          `https://deploy-preview-22--github-guru-server.netlify.app/getAccessToken?code=${codeParams}`,
           {
             method: "GET",
           }
@@ -39,12 +39,15 @@ const Login = () => {
   }, [rerender]);
 
   async function getUserData() {
-    await fetch("https://github-guru-server.netlify.app/getUserData", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("accessToken"),
-      },
-    })
+    await fetch(
+      "https://deploy-preview-22--github-guru-server.netlify.app/getUserData",
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -53,13 +56,12 @@ const Login = () => {
   }
 
   function loginWithGithub() {
-    console.log("Attempting to redirect to GitHub for login.");
-
-    chrome.tabs.create({
-      url: `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
-        "https://github-guru-server.netlify.app/auth/github/callback"
-      )}`,
-    });
+    const redirect_uri = encodeURIComponent(
+      `https://deploy-preview-22--github-guru-server.netlify.app/auth/github/callback`
+    );
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${redirect_uri}`;
+    console.log("Redirecting to GitHub for login:", authUrl);
+    chrome.tabs.create({ url: authUrl });
   }
 
   return (
