@@ -67,14 +67,11 @@ Workflow Steps
 
 3. Install Dependencies: Runs npm install to install all required npm packages as specified in package.json. This step is crucial for preparing the environment to build the extension.
 
-4. Linting: Utilizes the Super-Linter action to perform a comprehensive linting of the codebase. This helps maintain code quality and consistency by catching syntax errors and stylistic issues early in the development process.
+4. Pack Extension: Instead of a direct build script, we utilize TheDoctor0/zip-release@0.7.6 action to package the extension. This action compresses the project into a package.zip, excluding unnecessary files (like .git, .vscode, .github, and markdown files), ensuring that only relevant files are included in the package.
 
-5. Pack Extension: Instead of a direct build script, we utilize TheDoctor0/zip-release@0.7.6 action to package the extension. This action compresses the project into a package.zip, excluding unnecessary files (like .git, .vscode, .github, and markdown files), ensuring that only relevant files are included in the package.
-
-7. Upload Artifact: Uploads the package.zip as an artifact of the GitHub Actions run. This makes the packaged extension easily accessible for further testing, manual downloads, or future automated deployments.
+5. Upload Artifact: Uploads the package.zip as an artifact of the GitHub Actions run. This makes the packaged extension easily accessible for further testing, manual downloads, or future automated deployments.
 
 Highlights
-* Automated Linting: Ensures that all contributions adhere to our coding standards and guidelines.
 * Consistent Build Environment: By using Node.js version 14, we maintain a consistent environment that mirrors our production environment closely.
 * Artifact Generation: Generates a deployable package of our extension, facilitating easy distribution and testing.
 
