@@ -77,3 +77,20 @@ Highlights
 * Automated Linting: Ensures that all contributions adhere to our coding standards and guidelines.
 * Consistent Build Environment: By using Node.js version 14, we maintain a consistent environment that mirrors our production environment closely.
 * Artifact Generation: Generates a deployable package of our extension, facilitating easy distribution and testing.
+
+## Deployment for Server
+
+Our project's server is seamlessly deployed and hosted using Netlify, a powerful platform that simplifies the deployment process and automates continuous delivery. Netlify's deployment model is designed around a Git-centric workflow, automatically building and deploying the server whenever changes are committed to the repository. This ensures that our server is always up-to-date with the latest changes in our codebase, providing a reliable and efficient deployment process.
+
+### How Netlify Deployment Works:
+1. Continuous Deployment: Netlify integrates directly with our GitHub repository, monitoring for any changes committed to the server's directory. Upon detecting changes, Netlify triggers a new build and deployment process, ensuring that our server reflects the latest version of our code.
+
+2. Build Process: During the deployment, Netlify executes a build process defined by our project's configuration. This process involves installing dependencies, running build scripts, and generating the final build artifacts that will be served. For our server, this typically includes the execution of server-side scripts and the preparation of serverless functions.
+
+3. Live Server Updates: Once the build is complete, Netlify automatically updates our live server with the new build. This is done with minimal downtime, ensuring that our server remains accessible to users at all times. Netlify's atomic deployments also ensure that only fully successful builds are deployed, reducing the risk of introducing errors into the production environment.
+
+4. Rollbacks and Versioning: Netlify maintains a history of deployments, allowing us to easily rollback to previous versions of our server if needed. This is particularly useful for quickly reverting changes in case of unexpected issues with a new deployment.
+
+5. Custom Domains and SSL: Netlify provides support for custom domains and automatically manages SSL certificates, ensuring that our server is accessible via a secure and user-friendly URL.
+
+By leveraging Netlify for our server deployment, we benefit from a streamlined deployment process, reduced development overhead, and enhanced reliability. The platform's automation of the continuous delivery pipeline allows our team to focus more on development and less on the intricacies of deployment, making it an integral part of our project's infrastructure.
