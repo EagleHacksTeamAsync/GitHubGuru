@@ -15,56 +15,55 @@ router.get("/callback", (req, res) =>
   res.send("You've been logged in successfully!")
 );
 
-api.use("/api", router);
+router.get("/getAccessToken", async (req, res) => {
+  console.log(req.query.code);
 
-// //routes
-// router.get("/getAccessToken", async (req, res) => {
-//   console.log(req.query.code);
+  const params =
+    "? client_id=" +
+    CLIENT_ID +
+    "&client_secret=" +
+    CLIENT_SECRET +
+    "&code=" +
+    req.query.code;
 
-//   const params =
-//     "? client_id=" +
-//     CLIENT_ID +
-//     "&client_secret=" +
-//     CLIENT_SECRET +
-//     "&code=" +
-//     req.query.code;
+  await fetch(`https://github.com/login/oauth/access_token${params}`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      res.json(data);
+    })
+    .catch((error) => {
+      res.send(error);
+    });
+});
 
-//   await fetch(`https://github.com/login/oauth/access_token${params}`, {
-//     method: "POST",
-//     headers: {
-//       Accept: "application/json",
-//     },
-//   })
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((data) => {
-//       console.log(data);
-//       res.json(data);
-//     })
-//     .catch((error) => {
-//       res.send(error);
-//     });
-// });
+router.get("/getUserData", async (req, res) => {
+  req.get("Authorization");
+  await fetch("https://api.github.com/user", {
+    method: "GET",
+    headers: {
+      Authorization: req.get("Authorization"),
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      res.json(data);
+    })
+    .catch((error) => {
+      res.send;
+    });
+});
 
-// router.get("/getUserData", async (req, res) => {
-//   req.get("Authorization");
-//   await fetch("https://api.github.com/user", {
-//     method: "GET",
-//     headers: {
-//       Authorization: req.get("Authorization"),
-//     },
-//   })
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((data) => {
-//       console.log(data);
-//       res.json(data);
-//     })
-//     .catch((error) => {
-//       res.send;
-//     });
-// });
+api.use("/api/", router);
 
 export const handler = serverless(api);
