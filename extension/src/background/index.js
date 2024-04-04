@@ -2,7 +2,7 @@ function authenticateWithGitHub() {
   const clientId = "ae74d81ecc346767a9bc";
   const redirectUri = chrome.identity.getRedirectURL();
   const scope = "read:user";
-  const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
+  const authUrl = `https://github.com/login/oauth/authorize?client_id=ae74d81ecc346767a9bc&redirect_uri=${encodeURIComponent(
     redirectUri
   )}&scope=${encodeURIComponent(scope)}&response_type=token`;
 
@@ -13,13 +13,21 @@ function authenticateWithGitHub() {
     },
     (redirectUrl) => {
       if (redirectUrl) {
-        const accessToken = new URLSearchParams(
+        // Extract the access token from the redirect URL
+        const urlParams = new URLSearchParams(
           new URL(redirectUrl).hash.substring(1)
-        ).get("access_token");
-        chrome.storage.local.set({ accessToken: accessToken }, () => {
-          console.log("Access token stored.");
-        });
+        );
+        const accessToken = urlParams.get("access_token");
+
+        if (accessToken) {
+          chrome.storage.local.set({ accessToken }, () => {
+            console.log("Access token stored.");
+          });
+        } else {
+          console.log("No access token found in the response.");
+        }
       } else if (chrome.runtime.lastError) {
+        // Log any errors encountered during the auth flow
         console.log("Error or cancellation:", chrome.runtime.lastError.message);
       }
     }
@@ -31,6 +39,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     authenticateWithGitHub();
   } else if (message.action === "getAccessToken") {
     chrome.storage.local.get(["accessToken"], function (result) {
+      console.log("Sending back accessToken:", result.accessToken); // for debugging purposes
       sendResponse({ accessToken: result.accessToken });
     });
     return true;
