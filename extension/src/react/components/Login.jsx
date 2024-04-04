@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "antd";
 
-const Login = () => {
+const Login = ({ onAccessToken }) => {
     const [isModalVisible, setIsModalVisible] = useState(true);
     const [userData, setUserData] = useState(null);
-
+    
     useEffect(() => {
-        getAccessToken();
+        // For testing purposes, set a temporary access token
+        const temporaryAccessToken = ""; 
+        onAccessToken(temporaryAccessToken); // Pass the temporary token to the parent component
+        setIsModalVisible(false); // Close the modal since we're using a temporary token
     }, []);
 
     const getAccessToken = () => {
@@ -18,6 +21,7 @@ const Login = () => {
                 if (accessToken) {
                     setIsModalVisible(false);
                     getUserData(accessToken); // Ensure this is being called
+                    onAccessToken(accessToken); // Pass accessToken to App.jsx
                 } else {
                     setIsModalVisible(true);
                 }
@@ -62,31 +66,6 @@ const Login = () => {
             >
                 <p>You must log in with GitHub to use this extension.</p>
             </Modal>
-
-            {/* {userData && (
-                <div>
-                    <h1>Access Token Acquired</h1>
-                    <button
-                        onClick={() => {
-                            chrome.runtime.sendMessage({ action: "logout" }, () => {
-                                setIsModalVisible(true);
-                                setUserData(null);
-                            });
-                        }}
-                    >
-                        Logout
-                    </button>
-
-                    <div>
-                        <h2>Hello There, {userData.login}</h2>
-                        <img
-                            src={userData.avatar_url}
-                            alt="User avatar"
-                            style={{ width: 100, height: 100, borderRadius: "50%" }}
-                        ></img>
-                    </div>
-                </div>
-            )} */}
         </>
     );
 };
