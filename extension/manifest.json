@@ -9,7 +9,7 @@
   },
   "permissions": ["identity", "storage"],
   "background": {
-    "service_worker": "background/index.js"
+    "service_worker": "background.js"
   },
   "web_accessible_resources": [
     {
