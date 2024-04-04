@@ -55,4 +55,9 @@ export default {
   resolve: {
     extensions: [".js", ".jsx", ".css"],
   },
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+},
 };
