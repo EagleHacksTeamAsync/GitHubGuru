@@ -1,20 +1,22 @@
-import { Select, Space } from "antd";
+import { Select, Space, Switch } from "antd";
 import React from "react";
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+
 
 const SelectRepo = () => {
 
     
     return (
-        <Space wrap>
+        <Space >
             <Select
-           showSearch
-           style={{ width: 350 }}
-           placeholder="Search to Repository"
-           optionFilterProp="children"
-           filterOption={(input, option) => (option?.label ?? '').includes(input)}
-           filterSort={(optionA, optionB) =>
-             (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-           }
+            showSearch
+            style={{ width: 300 }}
+            placeholder='Select Repository'
+            optionFilterProp="children"
+            filterOption={(input, option) => (option?.label ?? '').includes(input)}
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+            }
             options={[
                 {
                 value: 'repo 1',
@@ -34,7 +36,14 @@ const SelectRepo = () => {
                 },
             ]}
             />
+            <Switch
+              checkedChildren={<CheckOutlined />}
+              unCheckedChildren={<CloseOutlined />}
+              defaultChecked
+            />
+
       </Space>
+      
     )
    
 };

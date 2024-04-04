@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Card, Button } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import '../styles/App.css';
 
-const PrCard = ({ pr }) => {
+const NotificationCard = ({ pr }) => {
     const [isChecked, setIsChecked] = useState(false); // State to manage checked status
 
     // Toggle the checked state on button click
@@ -12,7 +13,7 @@ const PrCard = ({ pr }) => {
 
     // Custom title component
     const titleComponent = (
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="title-component">
             <span>Feature/mobile brands page (PR #18)</span>
             <Button 
                 type={isChecked ? "primary" : "default"} // Change the button type based on isChecked
@@ -35,4 +36,4 @@ const PrCard = ({ pr }) => {
     );
 };
 
-export default PrCard;
+export default NotificationCard;

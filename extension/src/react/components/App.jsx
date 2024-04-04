@@ -1,27 +1,17 @@
-import { ConfigProvider, theme, Card, Space } from 'antd';
+import { ConfigProvider, theme, Card, Space, Segmented } from 'antd';
 import React, { useState } from 'react';
 import '../styles/App.css';
-import SegmentedComponent  from './segmented';
-import SelectRepo from './selectRepo';
-import PrCard from './prCard';
+import Notifications from './notifications';
 
 const App = () => {
-    const [activeTab, setActiveTab] = useState("Notifs");
+    const [activeTab, setActiveTab] = useState("Notifications");
 
-    const tabs = [
-        {
-            key: "Notifs",
-            tab: "Notifications",
-        },
-        {
-            key: "PR",
-            tab: "Pull Requests",
-        },
-        {
-            key: "Analytics",
-            tab: "Analytics",
-        },
-    ];
+    const tabs = ["Notifications", "Pull Requests", "Analytics",];
+
+    // Directly handle tab change in App
+    const handleTabChange = (value) => {
+        setActiveTab(value);
+    };
 
     return (
         <ConfigProvider
@@ -33,18 +23,15 @@ const App = () => {
                 title="Github Guru" 
                 className='base' 
             >
-                <Space direction="vertical" size="middle"> 
-                    <SegmentedComponent tabs={tabs} onChange={setActiveTab} />
-                    {activeTab === "Notifs" && (
-                        <>
-                            <SelectRepo />
-                            <PrCard />
-                            <PrCard />
-                            <PrCard />
-                            <PrCard />
-                        </>
-                    )}
-                </Space>
+                <div className="vertical-space">
+                    <Segmented 
+                        options={tabs} 
+                        value={activeTab} // Ensure the currently active tab is highlighted
+                        onChange={handleTabChange} 
+                        block
+                    />
+                    {activeTab === "Notifications" && <Notifications />}
+                </div>
 
             </Card>
         </ConfigProvider>
