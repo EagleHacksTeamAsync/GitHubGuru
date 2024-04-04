@@ -39,6 +39,7 @@ const Login = () => {
       setIsModalVisible(false); // Hide modal on successful fetch
     } catch (error) {
       console.error("Error fetching GitHub user data:", error);
+      setIsModalVisible(true);
     }
   }
 
