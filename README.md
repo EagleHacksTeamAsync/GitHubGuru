@@ -31,11 +31,13 @@ Team Name: Async
 1. Clone the repo
 2. Run `npm install`
 3. Navigate to the extension folder and run `npm install`(again)
-4. Stay in the extension folder and run `npm run build` or `npm run watch`. Notice that it generates a folder named "dist"
-5. Open `chrome://extensions/` in your chrome browser. Ensure that developer mode is on. The toggle is in the top right corner.
-6. Select "Load unpacked" in the top left corner.
-7. Find and select the "dist" folder.
-8. The chrome extension is now available locally.
+5. Navigate to `extension/src/config`, create a copy of the "config.json.example" file and name that copy "config.json".
+6. Retrieve the `clientId` and `clientSecret` from your admins.
+7. Stay in the extension folder and run `npm run build` or `npm run watch`. Notice that it generates a folder named "dist"
+8. Open `chrome://extensions/` in your chrome browser. Ensure that developer mode is on. The toggle is in the top right corner.
+9. Select "Load unpacked" in the top left corner.
+10. Find and select the "dist" folder.
+11. The chrome extension is now available locally.
 *Note: If you run `npm run watch` and you are not actively developing, remember to halt the process using CTRL+C*
 
 ## Development
