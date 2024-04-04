@@ -31,14 +31,15 @@ Team Name: Async
 1. Clone the repo
 2. Run `npm install`
 3. Navigate to the extension folder and run `npm install`(again)
-4. Stay in the extension folder and run `npm run build`. Notice that it generates a folder named "dist"
+4. Stay in the extension folder and run `npm run build` or `npm run watch`. Notice that it generates a folder named "dist"
 5. Open `chrome://extensions/` in your chrome browser. Ensure that developer mode is on. The toggle is in the top right corner.
 6. Select "Load unpacked" in the top left corner.
 7. Find and select the "dist" folder.
 8. The chrome extension is now available locally.
+*Note: If you run `npm run watch` and you are not actively developing, remember to halt the process using CTRL+C*
 
 ## Development
-When making changes to the code, run `npm run build` then navigate to `chrome://extensions/` in your browser and refresh the extension.
+When making changes to the code, run `npm run build` then navigate to `chrome://extensions/` in your browser and refresh the extension to ensure all changes are there (it should update on its own). Using `npm run watch` will allow you to develop/make changes and not have to continuously run `npm run build` to view your changes.
 
 # Tech Stack
 * HTML
@@ -67,14 +68,11 @@ Workflow Steps
 
 3. Install Dependencies: Runs npm install to install all required npm packages as specified in package.json. This step is crucial for preparing the environment to build the extension.
 
-4. Linting: Utilizes the Super-Linter action to perform a comprehensive linting of the codebase. This helps maintain code quality and consistency by catching syntax errors and stylistic issues early in the development process.
+4. Pack Extension: Instead of a direct build script, we utilize TheDoctor0/zip-release@0.7.6 action to package the extension. This action compresses the project into a package.zip, excluding unnecessary files (like .git, .vscode, .github, and markdown files), ensuring that only relevant files are included in the package.
 
-5. Pack Extension: Instead of a direct build script, we utilize TheDoctor0/zip-release@0.7.6 action to package the extension. This action compresses the project into a package.zip, excluding unnecessary files (like .git, .vscode, .github, and markdown files), ensuring that only relevant files are included in the package.
-
-7. Upload Artifact: Uploads the package.zip as an artifact of the GitHub Actions run. This makes the packaged extension easily accessible for further testing, manual downloads, or future automated deployments.
+5. Upload Artifact: Uploads the package.zip as an artifact of the GitHub Actions run. This makes the packaged extension easily accessible for further testing, manual downloads, or future automated deployments.
 
 Highlights
-* Automated Linting: Ensures that all contributions adhere to our coding standards and guidelines.
 * Consistent Build Environment: By using Node.js version 14, we maintain a consistent environment that mirrors our production environment closely.
 * Artifact Generation: Generates a deployable package of our extension, facilitating easy distribution and testing.
 

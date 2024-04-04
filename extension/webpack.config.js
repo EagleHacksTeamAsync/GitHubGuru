@@ -53,6 +53,6 @@ export default {
     ],
   },
   resolve: {
-    extensions: [".js", ".jsx", '.css'],
+    extensions: [".js", ".jsx", ".css"],
   },
 };

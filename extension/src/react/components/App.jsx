@@ -1,6 +1,7 @@
-import { ConfigProvider, theme, Card, Space, Segmented } from 'antd';
-import React, { useState } from 'react';
-import '../styles/App.css';
+import { ConfigProvider, theme, Card, Space, Segmented } from "antd";
+import React, { useState } from "react";
+import "../styles/App.css";
+import Login from "./Login";
 import Notifications from './notifications';
 
 const App = () => {
@@ -34,6 +35,7 @@ const App = () => {
                 </div>
 
             </Card>
+            <Login />
         </ConfigProvider>
     );
 };
