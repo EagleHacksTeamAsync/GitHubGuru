@@ -31,14 +31,15 @@ Team Name: Async
 1. Clone the repo
 2. Run `npm install`
 3. Navigate to the extension folder and run `npm install`(again)
-4. Stay in the extension folder and run `npm run build`. Notice that it generates a folder named "dist"
+4. Stay in the extension folder and run `npm run build` or `npm run watch`. Notice that it generates a folder named "dist"
 5. Open `chrome://extensions/` in your chrome browser. Ensure that developer mode is on. The toggle is in the top right corner.
 6. Select "Load unpacked" in the top left corner.
 7. Find and select the "dist" folder.
 8. The chrome extension is now available locally.
+*Note: If you run `npm run watch` and you are not actively developing, remember to halt the process using CTRL+C*
 
 ## Development
-When making changes to the code, run `npm run build` then navigate to `chrome://extensions/` in your browser and refresh the extension.
+When making changes to the code, run `npm run build` then navigate to `chrome://extensions/` in your browser and refresh the extension to ensure all changes are there (it should update on its own). Using `npm run watch` will allow you to develop/make changes and not have to continuously run `npm run build` to view your changes.
 
 # Tech Stack
 * HTML
