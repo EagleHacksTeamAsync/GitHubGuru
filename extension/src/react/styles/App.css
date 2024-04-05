@@ -1,0 +1,26 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.base {
+    width: 400px;
+    height: 600px;
+    border-radius: 0px;
+}
+
+.card-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .user-avatar {
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: auto;
+  }
