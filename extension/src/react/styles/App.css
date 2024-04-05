@@ -1,0 +1,27 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.base {
+    width: 400px;
+    min-height: 500px; /* Set a minimum height instead of a fixed height */
+    max-height: 600px; /* Set a maximum height instead of a fixed height */
+    border-radius: 0px;
+    overflow: auto; /* Add scroll to the card if content overflows */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.vertical-space > *:not(:last-child) {
+    margin-bottom: 16px; /* Adjust the space size as needed */
+}
+
+.title-component{  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+

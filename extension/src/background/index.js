@@ -13,7 +13,7 @@ function authenticateWithGitHub() {
 
     const redirectUri = chrome.identity.getRedirectURL();
     const scope = "read:user";
-    const authUrl = `https://github.com/login/oauth/authorize?client_id=ae74d81ecc346767a9bc&redirect_uri=${encodeURIComponent(
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=51dc19d041be97d3cb3f&redirect_uri=${encodeURIComponent(
         redirectUri
     )}&scope=${encodeURIComponent(scope)}&response_type=token`;
 
