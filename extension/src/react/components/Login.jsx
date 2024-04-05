@@ -11,7 +11,8 @@ const Login = ({ userData, onLogin, onLogout  }) => {
                 visible={isModalVisible}
                 onCancel={() => {}}
                 footer={[
-                    <Button key="login" type="primary" onClick={onLogin}>
+                    <Button key="login" type="primary" onClick={onLogin} style={{display:"inline-flex", alignItems:"center",}}>
+                        <img src="./images/logo-2.png" alt="GitHub" style={{ verticalAlign:"middle", marginRight:12, width:18 }} />
                         Login with GitHub
                     </Button>,
                 ]}
