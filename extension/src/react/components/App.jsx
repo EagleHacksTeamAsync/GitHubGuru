@@ -2,9 +2,11 @@ import { ConfigProvider, theme, Card } from "antd";
 import React, { useState } from "react";
 import "../syles/App.css";
 import Login from "./Login";
+import Analytics from "./Analytics";
 
 const App = () => {
   const [activeTab, setActiveTab] = useState("Notifs");
+  const [accessToken, setAccessToken] = useState(null); // State to hold access token
 
   const tabs = [
     {
@@ -15,10 +17,14 @@ const App = () => {
       key: "PR",
       tab: "PRs",
     },
+    {
+      key: "Analytics",
+      tab: "Analytics",
+    },
   ];
-  const content = {
-    Notifs: <h1>Notifications</h1>,
-    PR: <h1>PRs</h1>,
+
+  const handleAccessToken = (token) => { // handles access token from Login
+    setAccessToken(token); // sets access token for Analytics.jsx
   };
 
   return (
@@ -34,11 +40,16 @@ const App = () => {
         activeTabKey={activeTab}
         onTabChange={(key) => setActiveTab(key)}
       >
-        {content[activeTab]}
+        {activeTab === "Analytics" ? (
+          <Analytics accessToken={accessToken} />
+        ) : (
+          <h1>{activeTab}</h1>
+        )}
       </Card>
 
-      <Login />
+      <Login onAccessToken={handleAccessToken} />
     </ConfigProvider>
   );
 };
+
 export default App;

@@ -1,6 +1,16 @@
 function authenticateWithGitHub() {
-    const clientId = "ae74d81ecc346767a9bc";
-    const clientSecret = "bb4bcc3a40b7b7e78e41f26706c648d342e3870e";
+    let clientId, clientSecret;
+
+    fetch("../config/config.json")
+        .then((response) => response.json())
+        .then((data) => {
+            clientId = data.clientId;
+            clientSecret = data.clientSecret;
+        })
+        .catch((error) => {
+            console.error("Error fetching config:", error);
+        });
+
     const redirectUri = chrome.identity.getRedirectURL();
     const scope = "read:user";
     const authUrl = `https://github.com/login/oauth/authorize?client_id=ae74d81ecc346767a9bc&redirect_uri=${encodeURIComponent(
@@ -45,9 +55,15 @@ function authenticateWithGitHub() {
                     )
                     .then((data) => {
                         const accessToken = data['access_token'];
-                        chrome.storage.local.set({ accessToken }, () => {
-                            console.log("Access token stored.");
-                        });
+
+                        if(accessToken) {
+                            chrome.storage.local.set({ accessToken }, () => {
+                                console.log("Access token stored.");
+                            });
+                        }
+                        else {
+                            console.error("No access token found in the response.");
+                        }
                     })
                     .catch((error) => {
                         console.error("Error fetching access token:", error);
