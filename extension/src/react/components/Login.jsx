@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button } from "antd";
 
-const Login = ({ userData, onLogin, onLogout  }) => {
+const Login = ({ userData, onLogin  }) => {
     const isModalVisible = !userData;
 
     return (

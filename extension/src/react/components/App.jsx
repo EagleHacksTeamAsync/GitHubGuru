@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ConfigProvider, theme, Card, Menu, Dropdown } from "antd";
 import Login from "./Login";
+import Analytics from "./Analytics";
 import "../styles/App.css"; // Make sure the path is correct, it was misspelled in your snippet
 
 const App = () => {
@@ -42,10 +43,21 @@ const App = () => {
     setUserData(null);
     chrome.runtime.sendMessage({ action: "logout" }); 
   };
+  const [accessToken, setAccessToken] = useState(null); // State to hold access token
 
   const tabs = [
-    { key: "Notifs", tab: "Notifications" },
-    { key: "PR", tab: "PRs" },
+    {
+      key: "Notifs",
+      tab: "Notifications",
+    },
+    {
+      key: "PR",
+      tab: "PRs",
+    },
+    {
+      key: "Analytics",
+      tab: "Analytics",
+    },
   ];
 
   const content = {
@@ -92,7 +104,11 @@ const App = () => {
           activeTabKey={activeTab}
           onTabChange={setActiveTab}
         >
-          {content[activeTab]}
+          {activeTab === "Analytics" ? (
+          <Analytics accessToken={accessToken} />
+        ) : (
+          <h1>{activeTab}</h1>
+        )}
         </Card>
         {!userData && <Login onLogin={loginWithGithub} />}
       </div>
