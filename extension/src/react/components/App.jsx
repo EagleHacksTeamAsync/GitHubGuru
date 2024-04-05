@@ -37,12 +37,13 @@ const App = () => {
                         onChange={handleTabChange} 
                         block
                     />
-                    {activeTab === "Notifications" && <Notifications />}
                     {activeTab === "Analytics" ? (
                       <Analytics accessToken={accessToken} />
                     ) : (
                       <h1>{activeTab}</h1>
                     )}
+                    {activeTab === "Notifications" && <Notifications />}
+                    
                 </div>
 
             </Card>
