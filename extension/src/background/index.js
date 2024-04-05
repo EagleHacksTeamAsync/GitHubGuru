@@ -71,27 +71,31 @@ async function authenticateWithGitHub() {
 }
 
 
-async function fetchNotifications(accessToken) {
+async function fetchNotifications(accessToken, lastFetched) {
+    const headers = new Headers({
+        'Authorization': `Bearer ${accessToken}`,
+        'Accept': 'application/vnd.github.v3+json'
+    });
+
+    let queryParams = `?per_page=50`; // Fetch up to 50 notifications per call
+    if (lastFetched) {
+        queryParams += `&since=${encodeURIComponent(lastFetched)}`;
+    }
+
     try {
-        const response = await fetch('https://api.github.com/notifications', {
-            headers: {
-                Authorization: `token ${accessToken}`,
-            },
-        });
+        const response = await fetch(`https://api.github.com/notifications${queryParams}`, { headers });
         if (!response.ok) {
-            // Log or handle HTTP errors, e.g., 403 Forbidden
             console.error('HTTP Error:', response.status, response.statusText);
-            const errorDetails = await response.text(); // or response.json() if the response is in JSON format
+            const errorDetails = await response.text();
             console.error('Error Details:', errorDetails);
-            return null; // or throw an error, depending on your error handling strategy
+            return [];
         }
         return await response.json();
     } catch (error) {
         console.error('Error fetching notifications:', error);
-        throw error;
+        return [];
     }
 }
-
 
 
 function updateIcon(hasNotifications) {
@@ -99,17 +103,6 @@ function updateIcon(hasNotifications) {
     chrome.action.setIcon({ path: iconPath });
 }
 
-function testChromeNotification() {
-    chrome.storage.local.get(["accessToken"], function(result) {
-        if (result.accessToken) {
-            chromeNotification(result.accessToken);
-        } else {
-            console.error("Access token not found.");
-        }
-    });
-}
-
-testChromeNotification();
 
 function chromeNotification(accessToken) {
     fetchNotifications(accessToken)
@@ -118,8 +111,8 @@ function chromeNotification(accessToken) {
                 ? `You have ${notifications.length} new notifications.` 
                 : 'No new notifications.';
             const iconPath = Array.isArray(notifications) && notifications.length > 0 
-                ? 'images/gitLogo.svg' 
-                : 'images/gitLogoNotif.svg';
+                ? '../images/gitLogo.svg' 
+                : '../images/gitLogoNotif.svg';
             const iconUrl = chrome.runtime.getURL(iconPath);
             console.log(iconUrl);
 
@@ -135,6 +128,42 @@ function chromeNotification(accessToken) {
             console.error('Error fetching notifications:', error);
         });
 }
+
+function checkForNotifications() {
+    chrome.storage.local.get(["accessToken", "lastFetched"], function(result) {
+        if (result.accessToken) {
+            fetchNotifications(result.accessToken, result.lastFetched)
+                .then(notifications => {
+                    const hasNewNotifications = Array.isArray(notifications) && notifications.length > 0;
+                    updateIcon(hasNewNotifications);
+                    if (hasNewNotifications) {
+                        const message = `You have ${notifications.length} new notifications.`;
+                        const iconPath = '../images/gitLogo.svg';
+                        const iconUrl = chrome.runtime.getURL(iconPath);
+                        chrome.notifications.create('', {
+                            type: "basic",
+                            iconUrl: iconUrl,
+                            title: "GitHub Notifications",
+                            message: message,
+                            silent: false
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Polling error: Error fetching notifications:', error);
+                });
+        } else {
+            console.error("Polling error: Access token not found.");
+        }
+    });
+}
+
+function startNotificationPolling(interval) {
+    checkForNotifications(); 
+    setInterval(checkForNotifications, interval); 
+}
+
+startNotificationPolling(60000);
 
 
 
@@ -173,4 +202,3 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return true; 
     }    
 });
-
