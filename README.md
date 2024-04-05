@@ -96,7 +96,7 @@ Our project's server is seamlessly deployed and hosted using Netlify, a powerful
 By leveraging Netlify for our server deployment, we benefit from a streamlined deployment process, reduced development overhead, and enhanced reliability. The platform's automation of the continuous delivery pipeline allows our team to focus more on development and less on the intricacies of deployment, making it an integral part of our project's infrastructure.
 
 
-##Privacy Policy
+## Privacy Policy
 
 GitHub Guru is a Google Chrome extension developed by [Your Company Name]. This Privacy Policy explains how we collect, use, and disclose information collected from users of the GitHub Guru extension.
 
