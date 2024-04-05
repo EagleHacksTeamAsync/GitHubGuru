@@ -100,22 +100,22 @@ By leveraging Netlify for our server deployment, we benefit from a streamlined d
 
 GitHub Guru is a Google Chrome extension developed by Team Async. This Privacy Policy explains how we collect, use, and disclose information collected from users of the GitHub Guru extension.
 
-Information Collection and Use
+### Information Collection and Use
 
 GitHub Guru does not collect any personal information from users. However, the extension may request access to certain browser features or permissions to provide its functionality. These permissions are used solely for the intended purpose of the extension and are not shared with third parties.
 
-Data Security
+### Data Security
 
 We take the security of your data seriously. GitHub Guru only accesses data necessary for its functionality and does not store any personal information locally or on our servers. Any data accessed by the extension is used exclusively within the extension and is not shared externally.
 
-Third-Party Services
+### Third-Party Services
 
 GitHub Guru may integrate with third-party services such as GitHub's API to provide certain features. Users are encouraged to review the privacy policies of these third-party services for information on how they collect, use, and disclose data.
 
-Changes to this Privacy Policy
+### Changes to this Privacy Policy
 
 We reserve the right to update or change our Privacy Policy at any time. Any changes to the Privacy Policy will be reflected on this page. Users are encouraged to check this page periodically for updates.
 
-Contact Us
+### Contact Us
 
-If you have any questions or concerns about our Privacy Policy or the GitHub Guru extension, please contact us at [Your Contact Email Address].
+If you have any questions or concerns about our Privacy Policy or the GitHub Guru extension, please contact us at eaglehacks24@gmail.com
