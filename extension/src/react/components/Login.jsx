@@ -46,6 +46,7 @@ const Login = ({ onAccessToken }) => {
             setIsModalVisible(true);
         }
     }
+    
 
     return (
         <>
@@ -63,6 +64,29 @@ const Login = ({ onAccessToken }) => {
             >
                 <p>You must log in with GitHub to use this extension.</p>
             </Modal>
+                        {/* {userData && (
+                <div>
+                    <h1>Access Token Acquired</h1>
+                    <button
+                        onClick={() => {
+                            chrome.runtime.sendMessage({ action: "logout" }, () => {
+                                setIsModalVisible(true);
+                                setUserData(null);
+                            });
+                        }}
+                    >
+                        Logout
+                    </button>
+                    <div>
+                        <h2>Hello There, {userData.login}</h2>
+                        <img
+                            src={userData.avatar_url}
+                            alt="User avatar"
+                            style={{ width: 100, height: 100, borderRadius: "50%" }}
+                        ></img>
+                    </div>
+                </div>
+            )} */}
         </>
     );
 };
