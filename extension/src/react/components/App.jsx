@@ -7,6 +7,7 @@ import "../styles/App.css"; // Make sure the path is correct, it was misspelled 
 const App = () => {
   const [activeTab, setActiveTab] = useState("Notifs");
   const [userData, setUserData] = useState(null);
+  const [accessToken, setAccessToken] = useState(null); // State to hold access token
 
   useEffect(() => {
     const getAccessToken = () => {
@@ -14,13 +15,14 @@ const App = () => {
           const { accessToken } = response;
 
           if (accessToken) {
+              setAccessToken(accessToken);
               getUserData(accessToken);
           }
       });
     };
 
     getAccessToken();
-  }, []);
+  }, [accessToken]);
 
   const getUserData = async (token) => {
     try {
@@ -43,7 +45,6 @@ const App = () => {
     setUserData(null);
     chrome.runtime.sendMessage({ action: "logout" }); 
   };
-  const [accessToken, setAccessToken] = useState(null); // State to hold access token
 
   const tabs = [
     {
@@ -59,11 +60,6 @@ const App = () => {
       tab: "Analytics",
     },
   ];
-
-  const content = {
-    Notifs: <h1>Notifications</h1>,
-    PR: <h1>PRs</h1>,
-  };
 
   const menu = (
     <Menu>
@@ -81,7 +77,6 @@ const App = () => {
 
   return (
     <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
-      <div className="app-container">
         <Card
           title={
             <div className="card-title-container">
@@ -110,8 +105,9 @@ const App = () => {
           <h1>{activeTab}</h1>
         )}
         </Card>
-        {!userData && <Login onLogin={loginWithGithub} />}
-      </div>
+        {!userData && 
+            <Login onLogin={loginWithGithub} />
+        }
     </ConfigProvider>
   );
 };
