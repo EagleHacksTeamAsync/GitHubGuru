@@ -1,9 +1,9 @@
 function authenticateWithGitHub() {
-    const clientId = "ae74d81ecc346767a9bc";
-    const clientSecret = "bb4bcc3a40b7b7e78e41f26706c648d342e3870e";
+    const clientId = "51dc19d041be97d3cb3f";
+    const clientSecret = "3f137fd3d8d9ac9700009b319b66d37b14d51123";
     const redirectUri = chrome.identity.getRedirectURL();
     const scope = "read:user";
-    const authUrl = `https://github.com/login/oauth/authorize?client_id=ae74d81ecc346767a9bc&redirect_uri=${encodeURIComponent(
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=51dc19d041be97d3cb3f&redirect_uri=${encodeURIComponent(
         redirectUri
     )}&scope=${encodeURIComponent(scope)}&response_type=token`;
 

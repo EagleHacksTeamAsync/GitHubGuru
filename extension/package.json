@@ -38,6 +38,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@octokit/core": "^6.1.1",
     "antd": "^5.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -6,7 +6,8 @@ body {
 
 .base {
     width: 400px;
-    max-height: 600px; /* Set a minimum height instead of a fixed height */
+    min-height: 450px; /* Set a minimum height instead of a fixed height */
+    max-height: 600px; /* Set a maximum height instead of a fixed height */
     border-radius: 0px;
     overflow: auto; /* Add scroll to the card if content overflows */
     &::-webkit-scrollbar {

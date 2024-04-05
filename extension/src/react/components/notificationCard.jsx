@@ -3,7 +3,7 @@ import { Card, Button } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import '../styles/App.css';
 
-const NotificationCard = ({ pr }) => {
+const NotificationCard = ({ url, title, number, reviewer }) => {
     const [isChecked, setIsChecked] = useState(false); // State to manage checked status
 
     // Toggle the checked state on button click
@@ -14,7 +14,7 @@ const NotificationCard = ({ pr }) => {
     // Custom title component
     const titleComponent = (
         <div className="title-component">
-            <span>Feature/mobile brands page (PR #18)</span>
+            <span>{title} (PR #{number})</span>
             <Button 
                 type={isChecked ? "primary" : "default"} // Change the button type based on isChecked
                 size="small" 
@@ -26,13 +26,17 @@ const NotificationCard = ({ pr }) => {
 
     return (
         <Card 
-            title={titleComponent} // Use the custom title component
+            title={titleComponent} 
             bordered={true}
             size="small"
             style={{ width: 350 }}
         >
-            <p>@ragy2801 requested changes on this pull request</p>
-        </Card>
+            <p>
+                <a href={url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+                    @{reviewer} requested changes on this pull request
+                </a>
+            </p>        
+    </Card>
     );
 };
 
