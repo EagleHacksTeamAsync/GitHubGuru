@@ -61,7 +61,54 @@ function authenticateWithGitHub() {
     );
 }
 
+
+async function fetchEvents(accessToken) {
+    try {
+        const response = await fetch('https://api.github.com/events', {
+            headers: {
+                Authorization: `token ${accessToken}`,
+            },
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        throw error;
+    }
+}
+
+function updateIcon(hasNotifications) {
+    const iconPath = hasNotifications ? '../logo2.png' : '../logo.png';
+    chrome.action.setIcon({ path: iconPath });
+}
+function testChromeNotification() {
+    // Mock access token for testing
+    const accessToken = "";
+
+    // Call the chromeNotification function with the mock access token
+    chromeNotification(accessToken);
+}
+
+testChromeNotification();
+
+function chromeNotification(accessToken) {
+    fetchEvents(accessToken)
+        .then(events => {
+            const message = events.length > 0 ? `You have ${events.length} new events.` : 'No new events.';
+            chrome.notifications.create(
+                {
+                    type: "basic",
+                    iconUrl: "logo2.png",
+                    title: "GitHub Events",
+                    message: message,
+                    silent: false
+                }
+            );
+        })
+        .catch(error => console.error('Error fetching events:', error));
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("Add Listener");
     if (message.action === "authenticateWithGitHub") {
         authenticateWithGitHub();
     } else if (message.action === "getAccessToken") {
@@ -75,5 +122,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             sendResponse({});
         });
         return true;
+    } else if (message.action === "fetchEvents") {
+        chrome.storage.local.get(["accessToken"], function (result) {
+            fetchEvents(result.accessToken)
+                .then(notifications => {
+                    updateIcon(notifications.length > 0);
+                    sendResponse(notifications);
+                    chromeNotification(result.accessToken); // Pass accessToken
+                });
+        });
+        return true;
     }
 });
+
