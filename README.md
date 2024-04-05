@@ -4,10 +4,10 @@ The Ultimate Github Chrome Extension, used to display notifications from your Gi
 
 ## Features
 ### Notifications
-* Receive Github notifications no matter what tab you are on.
+* Receive Github notifications no matter what tab you are on (Notifications will appear in an interval of 10 minutes at a time, they will NOT currently appear in real-time).
 * View GitHub notifications received previously and link to the relevant change.
-* Functionality to clear or mark notifications as read, or mark them as "Flag for later"
-* "Flag for later" can be set for a specific time frame, the user will receive another notification after the time that is chosen.
+* Functionality to clear or mark notifications as read, or mark them as "Flag for later" (TBD)
+* "Flag for later" can be set for a specific time frame, the user will receive another notification after the time that is chosen. (TBD)
 * Functionality to filter notifications by repository.
 
 ### PRs
@@ -15,29 +15,39 @@ The Ultimate Github Chrome Extension, used to display notifications from your Gi
 * Track PR comments that were left on your PR.
 * Functionality to filter PRs by repository.
 
+### Issues
+* Track issues that are assigned to you and be able to view their details of it.
+* Easily view all comments and the history of an issue that you are working on. 
+
 ### Analytics
-* View the number of commits that the user has contributed over specific intervals of time.
-* Display the number of PRs reviewed over specific intervals of time.
-* Display the number of PRs completed and merged over specific intervals of time.
+* View analytics for repositories that are related to you.
+* This includes: weekly commit activity, total user commit activity, and All Users' Contribution Commit Activity
+* These analytics are filtered by repository.
+
+#### Support
+* This chrome extension is supported by all chromium browsers.
 
 ## Team Contributors and Roles
 Team Name: Async
-* Delphine Sintamour
-* Jose Suarez
-* Kevin Rodriguez Trujillo
-* Luke Hepokoski
+* Delphine Sintamour - Senior Dev
+* Jose Suarez - Software Engineer
+* Kevin Rodriguez Trujillo - Software Engineer Intern
+* Luke Hepokoski - Software Engineer
 
 # Local Setup
 1. Clone the repo
 2. Run `npm install`
 3. Navigate to the extension folder and run `npm install`(again)
-5. Navigate to `extension/src/config`, create a copy of the "config.json.example" file and name that copy "config.json".
-6. Retrieve the `clientId` and `clientSecret` from your admins.
-7. Stay in the extension folder and run `npm run build` or `npm run watch`. Notice that it generates a folder named "dist"
-8. Open `chrome://extensions/` in your chrome browser. Ensure that developer mode is on. The toggle is in the top right corner.
-9. Select "Load unpacked" in the top left corner.
-10. Find and select the "dist" folder.
-11. The chrome extension is now available locally.
+4. Stay in the extension folder and run `npm run build` or `npm run watch`. Notice that it generates a folder named "dist"
+5. Open `chrome://extensions/` in your chrome browser. Ensure that developer mode is on. The toggle is in the top right corner.
+6. Select "Load unpacked" in the top left corner.
+7. Find and select the "dist" folder.
+8. Your extension is now loaded into your browser but is not fully functional.
+9. Navigate to `extension/src/config`, create a copy of the "config.json.example" file and name that copy "config.json".
+10. Go to your Github settings and create an OAuth Application, follow these [steps](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app). Set the home page URL to https://github-guru-server.netlify.app/ and set the Authorization callback URL https://<app_id>.chromiumapp.org/ (You will need to replace the <app_id> in the url which is the id of your local extension which you can find in your extension manager `chrome://extensions/`)
+11. Retrieve the `client_id` and `client_secret` from the OAuthApplication you created and add them to the "config.json" file you created.
+12. Run `npm run build` again and refresh the extension in the extension manager.
+13. The chrome extension is now available locally.
 *Note: If you run `npm run watch` and you are not actively developing, remember to halt the process using CTRL+C*
 
 ## Development
@@ -54,6 +64,9 @@ When making changes to the code, run `npm run build` then navigate to `chrome://
 ## Other Resources
 * Webpack
 * AntDesign
+
+## Security
+This project uses OAuth Apps managed by GitHub. To run this extension locally, you must have access to/or setup an OAuth application and use the Client ID and Client Secret that is provided to you. These are sensitive pieces of information. Keeping the Client ID and Client Secret hidden prevents malicious parties from impersonating your application. If exposed, attackers can misuse these credentials to gain unauthorized access to user data or perform malicious actions on behalf of your application. To keep these values secure, we have integrated a **GitGuardian** account which will check for these keys in our branches. ![image](https://github.com/EagleHacksTeamAsync/GitHubGuru/assets/66536932/c778c282-a5ed-4f31-9fc8-bd103b0d1714)
 
 ## Sustainability
 Google Extensions themselves are utilized to streamline workflows, enable collaboration and remote work, increase productivity or efficiency through analytics, and use minimal power consumption due to their integration within the Chrome browser. In terms of software engineering sustainability practices, the extension utilizes a CI/CD pipeline which streamlines software development and deployment processes while also reducing the time and resources required for each iteration and minimizing waste. Since the extension is built-in via the Chrome browser, it minimizes system resource usage while also optimizing data transfers. This allows for the software to be efficient and perform well when running. Also, the main data host, Google, is a carbon neutral company, meaning that even when the data servers are being utilized they have very little to no impact on environmental resources.
