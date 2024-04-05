@@ -98,7 +98,7 @@ By leveraging Netlify for our server deployment, we benefit from a streamlined d
 
 ## Privacy Policy
 
-GitHub Guru is a Google Chrome extension developed by [Your Company Name]. This Privacy Policy explains how we collect, use, and disclose information collected from users of the GitHub Guru extension.
+GitHub Guru is a Google Chrome extension developed by Team Async. This Privacy Policy explains how we collect, use, and disclose information collected from users of the GitHub Guru extension.
 
 Information Collection and Use
 
