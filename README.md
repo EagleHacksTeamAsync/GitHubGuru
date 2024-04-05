@@ -94,3 +94,28 @@ Our project's server is seamlessly deployed and hosted using Netlify, a powerful
 5. Custom Domains and SSL: Netlify provides support for custom domains and automatically manages SSL certificates, ensuring that our server is accessible via a secure and user-friendly URL.
 
 By leveraging Netlify for our server deployment, we benefit from a streamlined deployment process, reduced development overhead, and enhanced reliability. The platform's automation of the continuous delivery pipeline allows our team to focus more on development and less on the intricacies of deployment, making it an integral part of our project's infrastructure.
+
+
+##Privacy Policy
+
+GitHub Guru is a Google Chrome extension developed by [Your Company Name]. This Privacy Policy explains how we collect, use, and disclose information collected from users of the GitHub Guru extension.
+
+Information Collection and Use
+
+GitHub Guru does not collect any personal information from users. However, the extension may request access to certain browser features or permissions to provide its functionality. These permissions are used solely for the intended purpose of the extension and are not shared with third parties.
+
+Data Security
+
+We take the security of your data seriously. GitHub Guru only accesses data necessary for its functionality and does not store any personal information locally or on our servers. Any data accessed by the extension is used exclusively within the extension and is not shared externally.
+
+Third-Party Services
+
+GitHub Guru may integrate with third-party services such as GitHub's API to provide certain features. Users are encouraged to review the privacy policies of these third-party services for information on how they collect, use, and disclose data.
+
+Changes to this Privacy Policy
+
+We reserve the right to update or change our Privacy Policy at any time. Any changes to the Privacy Policy will be reflected on this page. Users are encouraged to check this page periodically for updates.
+
+Contact Us
+
+If you have any questions or concerns about our Privacy Policy or the GitHub Guru extension, please contact us at [Your Contact Email Address].
