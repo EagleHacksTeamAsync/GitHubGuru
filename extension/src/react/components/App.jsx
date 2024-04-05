@@ -3,15 +3,21 @@ import React, { useState } from "react";
 import "../styles/App.css";
 import Login from "./Login";
 import Notifications from './notifications';
+import Analytics from "./Analytics";
 
 const App = () => {
-    const [activeTab, setActiveTab] = useState("Notifications");
+  const [accessToken, setAccessToken] = useState(null); // State to hold access token  
+  const [activeTab, setActiveTab] = useState("Notifications");
 
     const tabs = ["Notifications", "Pull Requests", "Analytics",];
 
     // Directly handle tab change in App
     const handleTabChange = (value) => {
         setActiveTab(value);
+    };
+
+    const handleAccessToken = (token) => { // handles access token from Login
+      setAccessToken(token); // sets access token for Analytics.jsx
     };
 
     return (
@@ -32,11 +38,17 @@ const App = () => {
                         block
                     />
                     {activeTab === "Notifications" && <Notifications />}
+                    {activeTab === "Analytics" ? (
+                      <Analytics accessToken={accessToken} />
+                    ) : (
+                      <h1>{activeTab}</h1>
+                    )}
                 </div>
 
             </Card>
-            <Login />
+            <Login onAccessToken={handleAccessToken}  />
         </ConfigProvider>
     );
 };
+
 export default App;
