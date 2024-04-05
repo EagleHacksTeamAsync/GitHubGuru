@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "../syles/App.css";
 import Login from "./Login";
 import Analytics from "./Analytics";
+import Notificationsection from "./Notificationsection";
 
 const App = () => {
   const [activeTab, setActiveTab] = useState("Notifs");
@@ -23,8 +24,8 @@ const App = () => {
     },
   ];
 
-  const handleAccessToken = (token) => { // handles access token from Login
-    setAccessToken(token); // sets access token for Analytics.jsx
+  const handleAccessToken = (token) => {
+    setAccessToken(token);
   };
 
   return (
@@ -42,6 +43,8 @@ const App = () => {
       >
         {activeTab === "Analytics" ? (
           <Analytics accessToken={accessToken} />
+        ) : activeTab === "Notifs" ? (
+          <Notificationsection accessToken={accessToken} /> // Pass accessToken to Notifications component
         ) : (
           <h1>{activeTab}</h1>
         )}
