@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "antd";
 
-const Login = () => {
+const Login = ({ onAccessToken }) => {
     const [isModalVisible, setIsModalVisible] = useState(true);
     const [userData, setUserData] = useState(null);
-
+    
     useEffect(() => {
         getAccessToken();
     }, []);
@@ -18,6 +18,7 @@ const Login = () => {
                 if (accessToken) {
                     setIsModalVisible(false);
                     getUserData(accessToken); // Ensure this is being called
+                    onAccessToken(accessToken); // Pass accessToken to App.jsx
                 } else {
                     setIsModalVisible(true);
                 }
@@ -45,6 +46,7 @@ const Login = () => {
             setIsModalVisible(true);
         }
     }
+    
 
     return (
         <>
@@ -62,8 +64,7 @@ const Login = () => {
             >
                 <p>You must log in with GitHub to use this extension.</p>
             </Modal>
-
-            {/* {userData && (
+                        {/* {userData && (
                 <div>
                     <h1>Access Token Acquired</h1>
                     <button
@@ -76,7 +77,6 @@ const Login = () => {
                     >
                         Logout
                     </button>
-
                     <div>
                         <h2>Hello There, {userData.login}</h2>
                         <img
