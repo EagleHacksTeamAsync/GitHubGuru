@@ -4,6 +4,7 @@ import NotificationCard from './notificationCard';
 import { Space } from 'antd';
 import { Octokit } from '@octokit/core';
 
+
 const Notifications = () => {
   const [repos, setRepos] = useState([]);
   const [selectedRepo, setSelectedRepo] = useState(null); 
@@ -15,7 +16,7 @@ const Notifications = () => {
   useEffect(() => {
     const fetchRepos = async () => {
       const octokit = new Octokit({
-        auth: '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' 
+        auth: process.env.GITHUB_TOKEN
       });
 
       try {
@@ -45,7 +46,7 @@ const Notifications = () => {
       if (!selectedRepo) return; // Exit if no repo is selected
 
       const octokit = new Octokit({
-        auth: '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' // Replace 'YOUR-TOKEN' with your actual GitHub token
+        auth: process.env.GITHUB_TOKEN
       });
 
       try {

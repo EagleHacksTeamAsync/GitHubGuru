@@ -1,6 +1,8 @@
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import path from "path";
+import Dotenv from "dotenv-webpack"; 
+
 
 export default {
   mode: "production",
@@ -30,6 +32,7 @@ export default {
         },
       ],
     }),
+    new Dotenv(),
   ],
   module: {
     rules: [
