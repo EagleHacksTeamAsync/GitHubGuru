@@ -14,8 +14,8 @@ async function authenticateWithGitHub() {
     console.log(clientId, clientSecret);
 
     const redirectUri = chrome.identity.getRedirectURL();
-    const scope = "read:user";
-    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}&response_type=token`;
+    const scope = "read:user,notifications";
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}&response_type=code`;
 
     console.log(authUrl);
     console.log(redirectUri)
@@ -71,50 +71,72 @@ async function authenticateWithGitHub() {
 }
 
 
-async function fetchEvents(accessToken) {
+async function fetchNotifications(accessToken) {
     try {
-        const response = await fetch('https://api.github.com/events', {
+        const response = await fetch('https://api.github.com/notifications', {
             headers: {
                 Authorization: `token ${accessToken}`,
             },
         });
+        if (!response.ok) {
+            // Log or handle HTTP errors, e.g., 403 Forbidden
+            console.error('HTTP Error:', response.status, response.statusText);
+            const errorDetails = await response.text(); // or response.json() if the response is in JSON format
+            console.error('Error Details:', errorDetails);
+            return null; // or throw an error, depending on your error handling strategy
+        }
         return await response.json();
     } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching notifications:', error);
         throw error;
     }
 }
 
+
+
 function updateIcon(hasNotifications) {
-    const iconPath = hasNotifications ? '../logo-2.png' : '../logo.png';
+    const iconPath = hasNotifications ? '../images/gitLogo.svg' : '../images/gitLogoNotif.svg';
     chrome.action.setIcon({ path: iconPath });
 }
-function testChromeNotification() {
-    // Mock access token for testing
-    const accessToken = "";
 
-    // Call the chromeNotification function with the mock access token
-    chromeNotification(accessToken);
+function testChromeNotification() {
+    chrome.storage.local.get(["accessToken"], function(result) {
+        if (result.accessToken) {
+            chromeNotification(result.accessToken);
+        } else {
+            console.error("Access token not found.");
+        }
+    });
 }
 
 testChromeNotification();
 
 function chromeNotification(accessToken) {
-    fetchEvents(accessToken)
-        .then(events => {
-            const message = events.length > 0 ? `You have ${events.length} new events.` : 'No new events.';
-            chrome.notifications.create(
-                {
-                    type: "basic",
-                    iconUrl: "../logo-2.png",
-                    title: "GitHub Events",
-                    message: message,
-                    silent: false
-                }
-            );
+    fetchNotifications(accessToken)
+        .then(notifications => {
+            const message = Array.isArray(notifications) && notifications.length > 0 
+                ? `You have ${notifications.length} new notifications.` 
+                : 'No new notifications.';
+            const iconPath = Array.isArray(notifications) && notifications.length > 0 
+                ? 'images/gitLogo.svg' 
+                : 'images/gitLogoNotif.svg';
+            const iconUrl = chrome.runtime.getURL(iconPath);
+            console.log(iconUrl);
+
+            chrome.notifications.create('', {
+                type: "basic",
+                iconUrl: iconUrl,
+                title: "GitHub Notifications",
+                message: message,
+                silent: false
+            });
         })
-        .catch(error => console.error('Error fetching events:', error));
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+        });
 }
+
+
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log("Add Listener");
@@ -131,16 +153,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             sendResponse({});
         });
         return true;
-    } else if (message.action === "fetchEvents") {
-        chrome.storage.local.get(["accessToken"], function (result) {
-            fetchEvents(result.accessToken)
-                .then(notifications => {
-                    updateIcon(notifications.length > 0);
-                    sendResponse(notifications);
-                    chromeNotification(result.accessToken); // Pass accessToken
-                });
+    } else if (message.action === "fetchNotifications") {
+        chrome.storage.local.get(["accessToken"], function(result) {
+            if (result.accessToken) {
+                fetchNotifications(result.accessToken)
+                    .then(notifications => {
+                        updateIcon(notifications.length > 0);
+                        sendResponse({ notifications: notifications });
+                    })
+                    .catch(error => {
+                        console.error("Error fetching notifications:", error);
+                        sendResponse({ error: error.toString() }); 
+                    });
+            } else {
+                console.error("Access token not found.");
+                sendResponse({ error: "Access token not found." }); 
+            }
         });
-        return true;
-    }
+        return true; 
+    }    
 });
 

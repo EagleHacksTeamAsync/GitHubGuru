@@ -9,7 +9,7 @@ const Analytics = ({ accessToken }) => {
   const [owner, setOwner] = useState('');
   const [repo, setRepo] = useState('');
   const [weeklyCommitCount, setWeeklyCommitCount] = useState(null);
-  const [userCommitCount, setUserCommitCount] = useState(null); // Corrected variable name
+  const [userCommitCount, setUserCommitCount] = useState(null); 
   const [allContributionCommitCount, setAllContributionCommitCount] = useState(null);
   const [loading, setLoading] = useState(false);
   const [reposList, setReposList] = useState([]);
@@ -42,8 +42,8 @@ const Analytics = ({ accessToken }) => {
       const weeklyCount = await fetchWeeklyCommitCount(accessToken, owner, repo);
       setWeeklyCommitCount(weeklyCount);
   
-      const userCount = await fetchUserContributionCommitCount(accessToken, owner, repo); // Corrected function name
-      setUserCommitCount(userCount); // Corrected variable name
+      const userCount = await fetchUserContributionCommitCount(accessToken, owner, repo);
+      setUserCommitCount(userCount); 
   
       const allContributionCount = await fetchAllContributionCommitCount(accessToken, owner, repo);
       setAllContributionCommitCount(allContributionCount);
