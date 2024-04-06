@@ -14,8 +14,8 @@ async function authenticateWithGitHub() {
     console.log(clientId, clientSecret);
 
     const redirectUri = chrome.identity.getRedirectURL();
-    const scope = "read:user%20notifications";
-    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}&response_type=code`;
+    const scope = "read:user,notifications";
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}&response_type=token`;
 
     console.log(authUrl);
     console.log(redirectUri)
@@ -71,18 +71,14 @@ async function authenticateWithGitHub() {
 }
 
 
-async function fetchNotifications(accessToken, lastFetched) {
+async function fetchNotifications(token) {
     const headers = new Headers({
-        'Authorization': `Bearer ${accessToken}`,
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json', 
     });
 
-    let queryParams = `?per_page=50`; // Fetch up to 50 notifications per call
-    if (lastFetched) {
-        queryParams += `&since=${encodeURIComponent(lastFetched)}`;
-    }
-
     try {
-        const response = await fetch(`https://api.github.com/notifications${queryParams}`, { headers });
+        const response = await fetch('https://api.github.com/notifications', { headers });
         if (!response.ok) {
             console.error('HTTP Error:', response.status, response.statusText);
             const errorDetails = await response.text();
@@ -97,12 +93,6 @@ async function fetchNotifications(accessToken, lastFetched) {
 }
 
 
-function updateIcon(hasNotifications) {
-    const iconPath = hasNotifications ? '../images/gitLogo.svg' : '../images/gitLogoNotif.svg';
-    chrome.action.setIcon({ path: iconPath });
-}
-
-
 function chromeNotification(accessToken) {
     fetchNotifications(accessToken)
         .then(notifications => {
@@ -113,15 +103,7 @@ function chromeNotification(accessToken) {
                 ? '../images/gitLogo.svg' 
                 : '../images/gitLogoNotif.svg';
             const iconUrl = chrome.runtime.getURL(iconPath);
-            console.log(iconUrl);
 
-            // chrome.notifications.create('', {
-            //     type: "basic",
-            //     iconUrl: iconUrl,
-            //     title: "GitHub Notifications",
-            //     message: message,
-            //     silent: false
-            // });
         })
         .catch(error => {
             console.error('Error fetching notifications:', error);
@@ -129,25 +111,12 @@ function chromeNotification(accessToken) {
 }
 
 function checkForNotifications() {
-    chrome.storage.local.get(["accessToken", "lastFetched"], function(result) {
+    chrome.storage.local.get(["accessToken"], function(result) {
         if (result.accessToken) {
-            fetchNotifications(result.accessToken, result.lastFetched)
+            fetchNotifications(result.accessToken)
                 .then(notifications => {
-                    const hasNewNotifications = Array.isArray(notifications) && notifications.length > 0;
-                    updateIcon(hasNewNotifications);
-                    // if (hasNewNotifications) {
-                    //     const message = `You have ${notifications.length} new notifications.`;
-                    //     const iconPath = '../images/gitLogo.svg';
-                    //     const iconUrl = chrome.runtime.getURL(iconPath);
-                    //     chrome.notifications.create('', {
-                    //         type: "basic",
-                    //         iconUrl: iconUrl,
-                    //         title: "GitHub Notifications",
-                    //         message: message,
-                    //         silent: false
-
-                        chrome.storage.local.set({ notifications: notifications });
-                    })
+                    chrome.storage.local.set({ notifications: notifications });
+                })
                 .catch(error => {
                     console.error('Polling error: Error fetching notifications:', error);
                 });
@@ -185,7 +154,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             if (result.accessToken) {
                 fetchNotifications(result.accessToken)
                     .then(notifications => {
-                        updateIcon(notifications.length > 0);
                         sendResponse({ notifications: notifications });
                     })
                     .catch(error => {

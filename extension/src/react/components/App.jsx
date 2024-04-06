@@ -27,12 +27,6 @@ const App = () => {
     getAccessToken();
   }, []);
 
-  useEffect(() => {
-    if (accessToken) {
-      fetchNotifications(accessToken).then(setNotifications);
-    }
-  }, [accessToken]);
-
   const getUserData = async (token) => {
     try {
         const response = await fetch("https://api.github.com/user", {
@@ -45,28 +39,6 @@ const App = () => {
         console.error("Error fetching GitHub user data:", error);
     }
   };
-
-  const fetchNotifications = async (token) => {
-    console.log('Attempting to fetch notifications with token:', token);
-    const url = 'https://api.github.com/notifications';
-    try {
-      const response = await fetch(url, {
-        headers: { 'Authorization': `Bearer ${token}`},
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP Error: ${response.status}`);
-      }
-     
-      const data = await response.json();
-      console.log('Response:', data);
-      setNotifications(data);
-      console.log(notifications)
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
-    }
-  };
-
 
   const loginWithGithub = () => {
     chrome.runtime.sendMessage({ action: "authenticateWithGitHub" });
@@ -130,12 +102,9 @@ const App = () => {
           activeTabKey={activeTab}
           onTabChange={setActiveTab}
         >
-          {activeTab === "Notifs" ? (
-          <NotificationsList notifications={notifications} />
-        ) : (
-          <h1>{activeTab}</h1>
-        )}
-
+          {activeTab === "Notifs" &&
+          <NotificationsList notifications={notifications} /> }
+        
           {activeTab === "Analytics" ? (
           <Analytics accessToken={accessToken} />
         ) : (
