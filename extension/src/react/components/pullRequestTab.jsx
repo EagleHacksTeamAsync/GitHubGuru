@@ -3,7 +3,7 @@ import { Card, Button, Select } from 'antd';
 import { fetchRepos, fetchPullRequestsWithChangeRequests } from './pullRequest';
 const { Option } = Select;
 
-const pullRequestTab = ({ accessToken }) => {
+const PullRequestTab = ({ accessToken }) => {
   const [reposList, setReposList] = useState([]);
   const [selectedRepo, setSelectedRepo] = useState('');
   const [pullRequests, setPullRequests] = useState([]);
@@ -41,7 +41,7 @@ const pullRequestTab = ({ accessToken }) => {
   }, []);
 
   return (
-    <Card title="Pull Requests">
+    <Card title="PRs">
       <div style={{ marginBottom: '20px' }}>
         <h3>Select Repository:</h3>
         <Select style={{ width: 200 }} defaultValue="Select" onChange={handleRepoChange}>
@@ -69,4 +69,4 @@ const pullRequestTab = ({ accessToken }) => {
   );
 };
 
-export default pullRequestTab;
+export default PullRequestTab;

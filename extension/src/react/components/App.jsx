@@ -4,7 +4,8 @@ import "../syles/App.css";
 import Login from "./Login";
 import Analytics from "./Analytics";
 import Notificationsection from "./Notificationsection";
-import pullRequestTab from "./pullRequestTab";
+import PullRequestTab from "./PullRequestTab";
+
 const App = () => {
   const [activeTab, setActiveTab] = useState("PR");
   const [accessToken, setAccessToken] = useState(null); // State to hold access token
