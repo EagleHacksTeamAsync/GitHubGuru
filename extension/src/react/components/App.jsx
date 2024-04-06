@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { ConfigProvider, theme, Card, Menu, Dropdown, Segmented } from "antd";
 import Login from "./Login";
 import Analytics from "./Analytics";
+import PullTab from "./PullTab";
 import "../styles/App.css"; // Make sure the path is correct, it was misspelled in your snippet
+import NotificationsList from "./NotificationsList";
 
 const App = () => {
     const [activeTab, setActiveTab] = useState("Notifications");
@@ -98,6 +100,12 @@ const App = () => {
                 />
                 {activeTab === "Analytics" &&
                     <Analytics accessToken={accessToken} />
+                }
+                {activeTab === "Notifications" &&
+                    <NotificationsList accessToken={accessToken} />
+                }
+                {activeTab === "Pull Requests" &&
+                    <PullTab accessToken={accessToken} />
                 }
                 {!userData && 
                     <Login onLogin={loginWithGithub} />
