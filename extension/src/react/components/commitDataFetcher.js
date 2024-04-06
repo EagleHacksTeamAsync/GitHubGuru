@@ -1,5 +1,3 @@
-// commitDataFetcher.js
-
 /**
  * Function to fetch user profile information
  * @param {*} accessToken - GitHub authorization access token 

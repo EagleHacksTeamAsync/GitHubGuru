@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { ConfigProvider, theme, Card, Menu, Dropdown, Segmented } from "antd";
 import Login from "./Login";
 import Analytics from "./Analytics";
-import "../styles/App.css"; // Make sure the path is correct, it was misspelled in your snippet
+import "../styles/App.css"; 
 
 const App = () => {
     const [activeTab, setActiveTab] = useState("Notifications");
     const [userData, setUserData] = useState(null);
-    const [accessToken, setAccessToken] = useState(null); // State to hold access token
+    const [accessToken, setAccessToken] = useState(null);
 
     useEffect(() => {
         const getAccessToken = () => {

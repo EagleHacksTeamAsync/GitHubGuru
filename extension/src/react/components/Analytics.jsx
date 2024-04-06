@@ -42,8 +42,8 @@ const Analytics = ({ accessToken }) => {
       const weeklyCount = await fetchWeeklyCommitCount(accessToken, owner, repo);
       setWeeklyCommitCount(weeklyCount);
   
-      const userCount = await fetchUserContributionCommitCount(accessToken, owner, repo); // Corrected function name
-      setUserCommitCount(userCount); // Corrected variable name
+      const userCount = await fetchUserContributionCommitCount(accessToken, owner, repo); 
+      setUserCommitCount(userCount);
   
       const allContributionCount = await fetchAllContributionCommitCount(accessToken, owner, repo);
       setAllContributionCommitCount(allContributionCount);
@@ -85,7 +85,7 @@ const Analytics = ({ accessToken }) => {
             {/* Display last year commit count */}
             <div>
                 <h3>Total User Commit Activity</h3>
-                {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 20 }} spin />} /> : <p>{userCommitCount}</p>} {/* Corrected variable name */}
+                {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 20 }} spin />} /> : <p>{userCommitCount}</p>}
             </div>
 
             {/* Display all contribution commit count */}
