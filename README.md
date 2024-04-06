@@ -34,6 +34,10 @@ Team Name: Async
 * Kevin Rodriguez Trujillo - Software Engineer Intern
 * Luke Hepokoski - Software Engineer
 
+# Demo and Figma
+[Video Demo](https://github.com/EagleHacksTeamAsync/GitHubGuru/assets/66536932/56c51bad-493e-4a7b-a5fb-49b74d234cb2)
+[Figma](https://www.figma.com/file/vfkLMI7y2fWy04EMwvZjOq/Design-For-Hackathon?type=design&node-id=0-1&mode=design&t=vQYWtADJlm3xtCt2-0)
+
 # Local Setup
 1. Clone the repo
 2. Run `npm install`
