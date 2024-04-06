@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Spin, Select } from 'antd';
+import { Card, Button, Spin, Select, Divider } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { fetchWeeklyCommitCount, fetchAllContributionCommitCount, fetchUserContributionCommitCount } from './commitDataFetcher';
 
@@ -69,40 +69,43 @@ const Analytics = ({ accessToken }) => {
   }, [owner, repo, accessToken]);
 
   return (
-    <Card title="Analytics">
-      {/* Repo selection */}
-      <div style={{ marginBottom: '20px' }}>
-        <h3>Select Repository:</h3>
-        <Select style={{ width: 200 }} onChange={handleRepoChange} defaultValue="Select">
-          {reposList.map(repo => (
-            <Option key={repo.id} value={repo.name}>{repo.name}</Option>
-          ))}
-        </Select>
-      </div>
+    <>
+        <Divider orientation="left">Analytics</Divider>
+        <Card>
+            {/* Repo selection */}
+            <div style={{ marginBottom: '20px' }}>
+                <Select style={{ width: '100%' }} onChange={handleRepoChange} defaultValue="Select a Repository">
+                {reposList.map(repo => (
+                    <Option key={repo.id} value={repo.name}>{repo.name}</Option>
+                ))}
+                </Select>
+            </div>
 
-      {/* Display weekly commit count */}
-      <div>
-        <h3>Weekly Commit Activity</h3>
-        {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 20 }} spin />} /> : <p>{weeklyCommitCount}</p>}
-      </div>
+            {/* Display weekly commit count */}
+            <div>
+                <h3>Weekly Commit Activity</h3>
+                {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 20 }} spin />} /> : <p>{weeklyCommitCount}</p>}
+            </div>
 
-      {/* Display last year commit count */}
+      {/* Display user commit count */}
       <div>
         <h3>Total User Commit Activity</h3>
         {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 20 }} spin />} /> : <p>{userCommitCount}</p>}
       </div>
 
-      {/* Display all contribution commit count */}
-      <div>
-        <h3>All Users' Contribution Commit Activity</h3>
-        {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 20 }} spin />} /> : <p>{allContributionCommitCount}</p>}
-      </div>
+            {/* Display all contribution commit count */}
+            <div>
+                <h3>All Users' Contribution Commit Activity</h3>
+                {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 20 }} spin />} /> : <p>{allContributionCommitCount}</p>}
+            </div>
 
-      {/* Refresh button */}
-      <Button onClick={fetchCommitData}>
-        Refresh Data
-      </Button>
-    </Card>
+            {/* Refresh button */}
+            <Button onClick={fetchCommitData}>
+                Refresh Data
+            </Button>
+        </Card>
+    </>
+
   );
 };
 

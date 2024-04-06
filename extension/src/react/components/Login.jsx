@@ -1,61 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Modal, Button } from "antd";
 
-const Login = ({ onAccessToken }) => {
-    const [isModalVisible, setIsModalVisible] = useState(true);
-    const [userData, setUserData] = useState(null);
-    
-    useEffect(() => {
-        getAccessToken();
-    }, []);
-
-    const getAccessToken = () => {
-        chrome.runtime.sendMessage(
-            { action: "getAccessToken" },
-            (response = {}) => {
-                const { accessToken } = response;
-
-                if (accessToken) {
-                    setIsModalVisible(false);
-                    getUserData(accessToken); // Ensure this is being called
-                    onAccessToken(accessToken); // Pass accessToken to App.jsx
-                } else {
-                    setIsModalVisible(true);
-                }
-            }
-        );
-    }
-
-    const loginWithGithub = () => {
-        chrome.runtime.sendMessage({ action: "authenticateWithGitHub" });
-    };
-
-    async function getUserData(token) {
-        try {
-            const response = await fetch("https://api.github.com/user", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            const data = await response.json();
-            console.log("User Data:", data); // This should log the user data
-
-            setUserData(data);
-            setIsModalVisible(false); // Hide modal on successful fetch
-        } catch (error) {
-            console.error("Error fetching GitHub user data:", error);
-            setIsModalVisible(true);
-        }
-    }
-    
+const Login = ({ userData, onLogin  }) => {
+    const isModalVisible = !userData;
 
     return (
         <>
             <Modal
                 title="Login Required"
-                visible={isModalVisible && !userData} // Modal visibility controlled by userData state
-                onCancel={() => setIsModalVisible(false)}
+                visible={isModalVisible}
+                onCancel={() => {}}
                 footer={[
-                    <Button key="login" type="primary" onClick={loginWithGithub}>
+                    <Button key="login" type="primary" onClick={onLogin} style={{ fontFamily: "Montserrat, sans-serif", fontWeight:"400", display:"inline-flex", alignItems:"center",}}>
+                        <img src="./images/logo-2.png" alt="GitHub" style={{ verticalAlign:"middle", marginRight:10, width:18, }} />
                         Login with GitHub
                     </Button>,
                 ]}
@@ -64,29 +21,8 @@ const Login = ({ onAccessToken }) => {
             >
                 <p>You must log in with GitHub to use this extension.</p>
             </Modal>
-                        {/* {userData && (
-                <div>
-                    <h1>Access Token Acquired</h1>
-                    <button
-                        onClick={() => {
-                            chrome.runtime.sendMessage({ action: "logout" }, () => {
-                                setIsModalVisible(true);
-                                setUserData(null);
-                            });
-                        }}
-                    >
-                        Logout
-                    </button>
-                    <div>
-                        <h2>Hello There, {userData.login}</h2>
-                        <img
-                            src={userData.avatar_url}
-                            alt="User avatar"
-                            style={{ width: 100, height: 100, borderRadius: "50%" }}
-                        ></img>
-                    </div>
-                </div>
-            )} */}
+
+
         </>
     );
 };
