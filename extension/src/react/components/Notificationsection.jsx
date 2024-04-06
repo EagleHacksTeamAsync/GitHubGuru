@@ -1,23 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Spin, Select } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
-import { fetchRepos } from './fetchNotifications';
-
+import { Card, Button, Select } from 'antd';
+import { fetchRepos, fetchPullRequestsWithChangeRequests } from './fetchNotifications';
 const { Option } = Select;
 
 const Notificationsection = ({ accessToken }) => {
   const [reposList, setReposList] = useState([]);
+  const [selectedRepo, setSelectedRepo] = useState('');
+  const [pullRequests, setPullRequests] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchReposData = async () => {
     setLoading(true);
     try {
-      const data = await fetchRepos(accessToken);
-      setReposList(data);
+      const repos = await fetchRepos(accessToken);
+      setReposList(repos);
     } catch (error) {
       console.error('Error fetching repos:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRepoChange = async value => {
+    setSelectedRepo(value);
+    try {
+      const pullRequestsData = await fetchPullRequestsWithChangeRequests(accessToken, value);
+      setPullRequests(pullRequestsData);
+    } catch (error) {
+      console.error('Error fetching pull requests:', error);
     }
   };
 
@@ -27,17 +37,26 @@ const Notificationsection = ({ accessToken }) => {
 
   return (
     <Card title="Notifications">
-      {/* Repo selection */}
       <div style={{ marginBottom: '20px' }}>
         <h3>Select Repository:</h3>
-        <Select style={{ width: 200 }} defaultValue="Select">
-          {reposList.map(repo => (
-            <Option key={repo.id} value={repo.name}>{repo.name}</Option>
+        <Select style={{ width: 200 }} defaultValue="Select" onChange={handleRepoChange}>
+          {reposList?.map(repo => (
+            <Option key={repo.id} value={repo.full_name}>{repo.full_name}</Option>
           ))}
         </Select>
       </div>
 
-      {/* Refresh button */}
+      <div>
+        <h3>Pull Requests with Change Requests:</h3>
+        <ul>
+          {pullRequests.map(pr => (
+            <li key={pr.id}>
+              <a href={pr.url}>{pr.title}</a> - #{pr.number}
+            </li>
+          ))}
+        </ul>
+      </div>
+
       <Button onClick={fetchReposData} loading={loading}>
         Refresh Repositories
       </Button>

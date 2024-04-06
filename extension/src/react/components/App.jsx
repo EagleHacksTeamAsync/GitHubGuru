@@ -44,7 +44,7 @@ const App = () => {
         {activeTab === "Analytics" ? (
           <Analytics accessToken={accessToken} />
         ) : activeTab === "Notifs" ? (
-          <Notificationsection accessToken={accessToken} /> // Pass accessToken to Notifications component
+          <Notificationsection accessToken={accessToken} /> 
         ) : (
           <h1>{activeTab}</h1>
         )}
