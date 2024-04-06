@@ -4,10 +4,9 @@ import "../syles/App.css";
 import Login from "./Login";
 import Analytics from "./Analytics";
 import Notificationsection from "./Notificationsection";
-import PullRequestTab from "./PullRequestTab";
-
+import PullTab from "./PullTab";
 const App = () => {
-  const [activeTab, setActiveTab] = useState("PR");
+  const [activeTab, setActiveTab] = useState("Welcome");
   const [accessToken, setAccessToken] = useState(null); // State to hold access token
 
   const tabs = [
@@ -23,6 +22,10 @@ const App = () => {
       key: "Analytics",
       tab: "Analytics",
     },
+    {
+      key: "Welcome",
+      tab: "Welcome",
+    }
   ];
 
   const handleAccessToken = (token) => {
@@ -47,7 +50,7 @@ const App = () => {
         ) : activeTab === "Notifs" ? (
           <Notificationsection accessToken={accessToken} /> 
         ) : activeTab === "PR" ? (
-          <pullRequestTab accessToken={accessToken} />
+          <PullTab accessToken={accessToken} />
         ) :
       
          (
