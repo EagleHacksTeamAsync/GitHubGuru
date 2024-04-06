@@ -14,7 +14,7 @@ async function authenticateWithGitHub() {
     console.log(clientId, clientSecret);
 
     const redirectUri = chrome.identity.getRedirectURL();
-    const scope = "read:user,notifications";
+    const scope = "read:user%20notifications";
     const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}&response_type=code`;
 
     console.log(authUrl);
@@ -74,7 +74,6 @@ async function authenticateWithGitHub() {
 async function fetchNotifications(accessToken, lastFetched) {
     const headers = new Headers({
         'Authorization': `Bearer ${accessToken}`,
-        'Accept': 'application/vnd.github.v3+json'
     });
 
     let queryParams = `?per_page=50`; // Fetch up to 50 notifications per call
@@ -116,13 +115,13 @@ function chromeNotification(accessToken) {
             const iconUrl = chrome.runtime.getURL(iconPath);
             console.log(iconUrl);
 
-            chrome.notifications.create('', {
-                type: "basic",
-                iconUrl: iconUrl,
-                title: "GitHub Notifications",
-                message: message,
-                silent: false
-            });
+            // chrome.notifications.create('', {
+            //     type: "basic",
+            //     iconUrl: iconUrl,
+            //     title: "GitHub Notifications",
+            //     message: message,
+            //     silent: false
+            // });
         })
         .catch(error => {
             console.error('Error fetching notifications:', error);
@@ -136,19 +135,19 @@ function checkForNotifications() {
                 .then(notifications => {
                     const hasNewNotifications = Array.isArray(notifications) && notifications.length > 0;
                     updateIcon(hasNewNotifications);
-                    if (hasNewNotifications) {
-                        const message = `You have ${notifications.length} new notifications.`;
-                        const iconPath = '../images/gitLogo.svg';
-                        const iconUrl = chrome.runtime.getURL(iconPath);
-                        chrome.notifications.create('', {
-                            type: "basic",
-                            iconUrl: iconUrl,
-                            title: "GitHub Notifications",
-                            message: message,
-                            silent: false
-                        });
-                    }
-                })
+                    // if (hasNewNotifications) {
+                    //     const message = `You have ${notifications.length} new notifications.`;
+                    //     const iconPath = '../images/gitLogo.svg';
+                    //     const iconUrl = chrome.runtime.getURL(iconPath);
+                    //     chrome.notifications.create('', {
+                    //         type: "basic",
+                    //         iconUrl: iconUrl,
+                    //         title: "GitHub Notifications",
+                    //         message: message,
+                    //         silent: false
+
+                        chrome.storage.local.set({ notifications: notifications });
+                    })
                 .catch(error => {
                     console.error('Polling error: Error fetching notifications:', error);
                 });
@@ -168,7 +167,6 @@ startNotificationPolling(60000);
 
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log("Add Listener");
     if (message.action === "authenticateWithGitHub") {
         authenticateWithGitHub();
     } else if (message.action === "getAccessToken") {
