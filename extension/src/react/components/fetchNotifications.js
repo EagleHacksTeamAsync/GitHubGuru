@@ -28,22 +28,17 @@ export const fetchReviews = async (accessToken, owner, repo, pullNumber) => {
    * @param {*} accessToken - GitHub authorization access token
    * @returns - array of repositories
    */
-  export const fetchRepositories = async (accessToken) => {
+  export const fetchRepos = async () => {
     try {
       const response = await fetch('https://api.github.com/user/repos', {
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `token ${accessToken}`
         }
       });
       const data = await response.json();
-      const repositories = data.map(repo => ({
-        value: repo.full_name,
-        label: repo.full_name
-      }));
-      return repositories;
+      setReposList(data);
     } catch (error) {
-      console.error('Error fetching repositories:', error);
-      return [];
+      console.error('Error fetching repos:', error);
     }
   };
   
