@@ -1,13 +1,16 @@
 body {
-    font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
 }
 
 .base {
-    width: 400px;
+    width: 425px;
     height: 600px;
     border-radius: 0px;
+    overflow: auto; /* Add scroll to the card if content overflows */
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .card-title-container {
@@ -15,12 +18,27 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 20px;
   }
   
-  .user-avatar {
+.user-avatar {
     width: 40px; 
-    height: 40px; 
+    height: auto; 
     border-radius: 50%;
     cursor: pointer;
     margin-left: auto;
-  }
+    padding-top: 6px;
+}
+
+.logo {
+    width: 45px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.header {
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    padding: 5px 0px 5px 0px;
+}
