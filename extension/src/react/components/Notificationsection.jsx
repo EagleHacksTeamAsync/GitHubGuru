@@ -12,8 +12,13 @@ const Notificationsection = ({ accessToken }) => {
   const fetchReposData = async () => {
     setLoading(true);
     try {
-      const repos = await fetchRepos(accessToken);
-      setReposList(repos);
+      const response = await fetch('https://api.github.com/user/repos', {
+        headers: {
+          Authorization: `token ${accessToken}`
+        }
+      });
+      const data = await response.json();
+      setReposList(data);
     } catch (error) {
       console.error('Error fetching repos:', error);
     } finally {
@@ -49,7 +54,7 @@ const Notificationsection = ({ accessToken }) => {
       <div>
         <h3>Pull Requests with Change Requests:</h3>
         <ul>
-          {pullRequests.map(pr => (
+          {pullRequests?.map(pr => (
             <li key={pr.id}>
               <a href={pr.url}>{pr.title}</a> - #{pr.number}
             </li>

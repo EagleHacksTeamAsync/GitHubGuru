@@ -6,7 +6,7 @@ import Analytics from "./Analytics";
 import Notificationsection from "./Notificationsection";
 
 const App = () => {
-  const [activeTab, setActiveTab] = useState("Notifs");
+  const [activeTab, setActiveTab] = useState("PR");
   const [accessToken, setAccessToken] = useState(null); // State to hold access token
 
   const tabs = [
