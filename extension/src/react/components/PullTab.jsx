@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Spin, Select } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { fetchRepos, fetchPullRequestsWithChangeRequests, fetchReviews } from './pullRequest';
+import { fetchRepos, fetchPullRequestsWithChangeRequests } from './pullRequest';
 const { Option } = Select;
 
 const PullTab = ({ accessToken }) => {
@@ -13,8 +13,10 @@ const PullTab = ({ accessToken }) => {
   const fetchPullRequests = async () => {
     setLoading(true);
     try {
-      const pullRequests = await fetchPullRequestsWithChangeRequests(accessToken, selectedRepo);
-      setPullRequests(pullRequests);
+      if (accessToken && selectedRepo) {
+        const pullRequests = await fetchPullRequestsWithChangeRequests(accessToken, selectedRepo);
+        setPullRequests(pullRequests);
+      }
     } catch (error) {
       console.error('Error fetching pull requests:', error);
     }
@@ -23,8 +25,10 @@ const PullTab = ({ accessToken }) => {
 
   const fetchReposList = async () => {
     try {
-      const repos = await fetchRepos(accessToken);
-      setReposList(repos);
+      if (accessToken) {
+        const repos = await fetchRepos(accessToken);
+        setReposList(repos);
+      }
     } catch (error) {
       console.error('Error fetching repos:', error);
     }
@@ -32,7 +36,7 @@ const PullTab = ({ accessToken }) => {
 
   useEffect(() => {
     fetchReposList();
-  }, []);
+  }, [accessToken]);
 
   const handleRepoChange = value => {
     setSelectedRepo(value);
@@ -42,7 +46,7 @@ const PullTab = ({ accessToken }) => {
     if (selectedRepo) {
       fetchPullRequests();
     }
-  }, [selectedRepo]);
+  }, [selectedRepo, accessToken]);
 
   return (
     <Card title="Pull Requests">

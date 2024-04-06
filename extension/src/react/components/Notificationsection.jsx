@@ -12,13 +12,15 @@ const Notificationsection = ({ accessToken }) => {
   const fetchReposData = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://api.github.com/user/repos', {
-        headers: {
-          Authorization: `token ${accessToken}`
-        }
-      });
-      const data = await response.json();
-      setReposList(data);
+      if (accessToken) {
+        const response = await fetch('https://api.github.com/user/repos', {
+          headers: {
+            Authorization: `token ${accessToken}`
+          }
+        });
+        const data = await response.json();
+        setReposList(data);
+      }
     } catch (error) {
       console.error('Error fetching repos:', error);
     } finally {
@@ -29,8 +31,10 @@ const Notificationsection = ({ accessToken }) => {
   const handleRepoChange = async value => {
     setSelectedRepo(value);
     try {
-      const pullRequestsData = await fetchPullRequestsWithChangeRequests(accessToken, value);
-      setPullRequests(pullRequestsData);
+      if (accessToken) {
+        const pullRequestsData = await fetchPullRequestsWithChangeRequests(accessToken, value);
+        setPullRequests(pullRequestsData);
+      }
     } catch (error) {
       console.error('Error fetching pull requests:', error);
     }
@@ -38,7 +42,7 @@ const Notificationsection = ({ accessToken }) => {
 
   useEffect(() => {
     fetchReposData();
-  }, []);
+  }, [accessToken]);
 
   return (
     <Card title="Notifications">

@@ -6,7 +6,7 @@ import Analytics from "./Analytics";
 import Notificationsection from "./Notificationsection";
 import PullTab from "./PullTab";
 const App = () => {
-  const [activeTab, setActiveTab] = useState("Welcome");
+  const [activeTab, setActiveTab] = useState("Notifs");
   const [accessToken, setAccessToken] = useState(null); // State to hold access token
 
   const tabs = [
@@ -22,10 +22,6 @@ const App = () => {
       key: "Analytics",
       tab: "Analytics",
     },
-    {
-      key: "Welcome",
-      tab: "Welcome",
-    }
   ];
 
   const handleAccessToken = (token) => {

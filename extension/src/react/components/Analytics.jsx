@@ -9,20 +9,22 @@ const Analytics = ({ accessToken }) => {
   const [owner, setOwner] = useState('');
   const [repo, setRepo] = useState('');
   const [weeklyCommitCount, setWeeklyCommitCount] = useState(null);
-  const [userCommitCount, setUserCommitCount] = useState(null); // Corrected variable name
+  const [userCommitCount, setUserCommitCount] = useState(null);
   const [allContributionCommitCount, setAllContributionCommitCount] = useState(null);
   const [loading, setLoading] = useState(false);
   const [reposList, setReposList] = useState([]);
 
   const fetchRepos = async () => {
     try {
-      const response = await fetch('https://api.github.com/user/repos', {
-        headers: {
-          Authorization: `token ${accessToken}`
-        }
-      });
-      const data = await response.json();
-      setReposList(data);
+      if (accessToken) {
+        const response = await fetch('https://api.github.com/user/repos', {
+          headers: {
+            Authorization: `token ${accessToken}`
+          }
+        });
+        const data = await response.json();
+        setReposList(data);
+      }
     } catch (error) {
       console.error('Error fetching repos:', error);
     }
@@ -39,29 +41,32 @@ const Analytics = ({ accessToken }) => {
   const fetchCommitData = async () => {
     setLoading(true);
     try {
-      const weeklyCount = await fetchWeeklyCommitCount(accessToken, owner, repo);
-      setWeeklyCommitCount(weeklyCount);
+      if (accessToken && owner && repo) {
+        const weeklyCount = await fetchWeeklyCommitCount(accessToken, owner, repo);
+        setWeeklyCommitCount(weeklyCount);
   
-      const userCount = await fetchUserContributionCommitCount(accessToken, owner, repo); // Corrected function name
-      setUserCommitCount(userCount); // Corrected variable name
+        const userCount = await fetchUserContributionCommitCount(accessToken, owner, repo);
+        setUserCommitCount(userCount);
   
-      const allContributionCount = await fetchAllContributionCommitCount(accessToken, owner, repo);
-      setAllContributionCommitCount(allContributionCount);
+        const allContributionCount = await fetchAllContributionCommitCount(accessToken, owner, repo);
+        setAllContributionCommitCount(allContributionCount);
+      }
     } catch (error) {
       console.error('Error fetching commit data:', error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
     fetchRepos();
-  }, []);
+  }, [accessToken]);
 
   useEffect(() => {
     if (owner && repo) {
       fetchCommitData();
     }
-  }, [owner, repo]);
+  }, [owner, repo, accessToken]);
 
   return (
     <Card title="Analytics">
@@ -84,7 +89,7 @@ const Analytics = ({ accessToken }) => {
       {/* Display last year commit count */}
       <div>
         <h3>Total User Commit Activity</h3>
-        {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 20 }} spin />} /> : <p>{userCommitCount}</p>} {/* Corrected variable name */}
+        {loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 20 }} spin />} /> : <p>{userCommitCount}</p>}
       </div>
 
       {/* Display all contribution commit count */}
