@@ -60,7 +60,7 @@ const Notificationsection = ({ accessToken }) => {
         <ul>
           {pullRequests?.map(pr => (
             <li key={pr.id}>
-              <a href={pr.url}>{pr.title}</a> - #{pr.number}
+              {pr.title} - #{pr.number}
             </li>
           ))}
         </ul>
